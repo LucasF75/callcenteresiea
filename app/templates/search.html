@@ -1,25 +1,14 @@
-<!doctype html>
-<html>
-<head><title>Résultats de recherche</title></head>
-<body>
-  <h2>Résultats :</h2>
-  {% if books %}
-    <ul>
-      {% for book in books %}
-        <li>
-          <h3>{{ book.volumeInfo.title }}</h3>
-          {% if book.volumeInfo.authors %}
-            <p>Auteurs : {{ book.volumeInfo.authors | join(', ') }}</p>
-          {% endif %}
-          {% if book.volumeInfo.imageLinks %}
-            <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="Couverture">
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>Aucun résultat.</p>
-  {% endif %}
-  <a href="{{ url_for('main.home') }}">Retour</a>
-</body>
-</html>
+{% for book in books %}
+  <li>
+    <h3>{{ book.title }}</h3>
+    {% if book.authors %}
+      <p>Auteurs : {{ book.authors | join(', ') }}</p>
+    {% endif %}
+    {% if book.thumbnail %}
+      <img src="{{ book.thumbnail }}" alt="Couverture">
+    {% endif %}
+    <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
+      Voir les détails
+    </a>
+  </li>
+{% endfor %}

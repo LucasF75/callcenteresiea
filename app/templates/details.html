@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head><title>{{ book.title }}</title></head>
+<body>
+  <h2>{{ book.title }}</h2>
+  <p><strong>Auteur(s):</strong> {{ book.authors | join(', ') }}</p>
+  {% if book.thumbnail %}
+    <img src="{{ book.thumbnail }}" alt="couverture">
+  {% endif %}
+  <p>{{ book.description | safe }}</p>
+
+  <form method="POST" action="{{ url_for('main.save_book', book_id=book.id) }}">
+    {% if is_saved %}
+      <button type="submit" name="action" value="delete">Supprimer des enregistrements</button>
+    {% else %}
+      <button type="submit" name="action" value="save">Enregistrer</button>
+    {% endif %}
+  </form>
+  
+
+  <a href="{{ url_for('main.search') }}">← Retour</a>
+</body>
+</html>
