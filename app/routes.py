@@ -1,6 +1,8 @@
-from app import app
-from flask import render_template
+from flask import Blueprint, render_template
+from flask_login import login_required, current_user
 
-@app.route('/')
+main = Blueprint('main', __name__)
+
+@main.route('/')
 def home():
-    return "<h1>Bienvenue sur Readlist !</h1>"
+    return render_template('login.html', user=current_user)

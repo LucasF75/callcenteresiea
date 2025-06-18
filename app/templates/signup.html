@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <head><title>Sign up</title></head>
+  <body>
+    <h2>Create account</h2>
+    <form method="POST">
+
+      {{ form.username.label }} {{ form.username() }}<br>
+      {{ form.email.label }} {{ form.email() }}<br>
+      {{ form.password.label }} {{ form.password() }}<br>
+      {{ form.submit() }}
+    </form>
+    <a href="{{ url_for('auth.login') }}">Already have an account?</a>
+  </body>
+</html>

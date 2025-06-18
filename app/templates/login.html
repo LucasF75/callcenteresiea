@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <head><title>Login</title></head>
+  <body>
+    <h2>Login</h2>
+    <p>coucouuuuuuuuuuuuc</p>
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      {{ form.email.label }} {{ form.email() }}<br>
+      {{ form.password.label }} {{ form.password() }}<br>
+      {{ form.submit() }}
+    </form>
+    <a href="{{ url_for('auth.signup') }}">Create an account</a>
+  </body>
+</html>
