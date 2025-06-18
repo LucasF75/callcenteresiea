@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head><title>Profil de {{ user.name }}</title></head>
+<body>
+  <h1>Profil de {{ user.name }}</h1>
+  <p>Email : {{ user.email }}</p>
+
+  <h2>📚 Livres enregistrés</h2>
+  {% if saved_books %}
+    <ul>
+      {% for book in saved_books %}
+  <li>
+    <form action="{{ url_for('main.save_book', book_id=book.id) }}" method="post" style="display:inline;">
+      <input type="hidden" name="action" value="delete">
+      {% if book.thumbnail %}
+        <img src="{{ book.thumbnail }}" alt="Couverture" style="height: 100px;">
+      {% endif %}
+      <p>{{ book.title }}</p>
+      <button type="submit">🗑 Supprimer</button>
+    </form>
+    <a href="{{ url_for('main.book_detail', book_id=book.id) }}">[Détails]</a>
+  </li>
+{% endfor %}
+
+
+    </ul>
+  {% else %}
+    <p>Aucun livre enregistré.</p>
+  {% endif %}
+
+  <h2>💬 Commentaires postés</h2>
+  {% if comments %}
+    <ul>
+      {% for comment in comments %}
+        <li>
+          Sur le livre <strong>{{ comment.book_id }}</strong> : {{ comment.content }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Aucun commentaire encore.</p>
+  {% endif %}
+
+
+    <a href="{{ url_for('auth.logout') }}">Se déconnecter</a> <br>
+
+  <a href="{{ url_for('main.home') }}">← Retour à l'accueil</a>
+</body>
+</html>

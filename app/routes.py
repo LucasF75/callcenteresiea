@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 import requests
 
-from app.models import SavedBook
+
+from app.models import SavedBook, Comment
 from app import db
 
 main = Blueprint('main', __name__)
@@ -41,6 +42,7 @@ def book_detail(book_id):
     if response.status_code == 200:
         data = response.json()
         volume_info = data.get('volumeInfo', {})
+        comments = Comment.query.filter_by(book_id=book_id).order_by(Comment.timestamp.desc()).all()
 
         book = {
             'id': book_id,
@@ -52,7 +54,7 @@ def book_detail(book_id):
 
         is_saved = SavedBook.query.filter_by(user_id=current_user.id, book_id=book_id).first() is not None
 
-        return render_template('details.html', book=book, is_saved=is_saved)
+        return render_template('details.html', book=book, is_saved=is_saved, comments=comments)
 
 
     flash("Livre introuvable.")
@@ -79,3 +81,58 @@ def save_book(book_id):
             flash('Livre supprimé.')
 
     return redirect(url_for('main.book_detail', book_id=book_id))
+
+
+@main.route('/saved')
+@login_required
+def saved_books():
+    saved = SavedBook.query.filter_by(user_id=current_user.id).all()
+    books = []
+
+    for item in saved:
+        response = requests.get(f"https://www.googleapis.com/books/v1/volumes/{item.book_id}")
+        if response.status_code == 200:
+            data = response.json()
+            volume_info = data.get('volumeInfo', {})
+            books.append({
+                'id': item.book_id,
+                'title': volume_info.get('title'),
+                'authors': volume_info.get('authors', []),
+                'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
+            })
+
+    return render_template('saved.html', books=books)
+
+
+@main.route('/book/<book_id>/comment', methods=['POST'])
+@login_required
+def comment_book(book_id):
+    content = request.form.get('comment')
+    if content:
+        new_comment = Comment(book_id=book_id, user_id=current_user.id, content=content)
+        db.session.add(new_comment)
+        db.session.commit()
+        flash('Commentaire ajouté.')
+    return redirect(url_for('main.book_detail', book_id=book_id))
+
+
+@main.route('/profile')
+@login_required
+def profile():
+    saved_books_raw = SavedBook.query.filter_by(user_id=current_user.id).all()
+    saved_books = []
+
+    for saved in saved_books_raw:
+        response = requests.get(f'https://www.googleapis.com/books/v1/volumes/{saved.book_id}')
+        if response.status_code == 200:
+            data = response.json()
+            volume_info = data.get('volumeInfo', {})
+            saved_books.append({
+                'id': saved.book_id,
+                'title': volume_info.get('title', 'Titre inconnu'),
+                'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
+            })
+
+    user_comments = Comment.query.filter_by(user_id=current_user.id).all()
+
+    return render_template('profile.html', user=current_user, saved_books=saved_books, comments=user_comments)

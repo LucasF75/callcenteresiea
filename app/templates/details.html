@@ -16,6 +16,19 @@
       <button type="submit" name="action" value="save">Enregistrer</button>
     {% endif %}
   </form>
+
+  <h3>Commentaires</h3>
+
+    <form method="POST" action="{{ url_for('main.comment_book', book_id=book.id) }}">
+    <textarea name="comment" required></textarea><br>
+    <button type="submit">Envoyer</button>
+    </form>
+
+    <ul>
+  {% for comment in comments %}
+    <li><strong>{{ comment.user.name }}</strong> : {{ comment.content }}</li>
+  {% endfor %}
+</ul>
   
 
   <a href="{{ url_for('main.search') }}">← Retour</a>

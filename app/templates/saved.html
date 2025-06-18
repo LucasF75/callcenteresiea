@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head><title>Mes livres enregistrés</title></head>
+<body>
+  <h2>Livres enregistrés</h2>
+  {% if books %}
+    <ul>
+      {% for book in books %}
+        <li>
+          <h3>{{ book.title }}</h3>
+          {% if book.authors %}
+            <p>Auteur(s) : {{ book.authors | join(', ') }}</p>
+          {% endif %}
+          {% if book.thumbnail %}
+            <img src="{{ book.thumbnail }}" alt="Couverture">
+          {% endif %}
+          <a href="{{ url_for('main.book_detail', book_id=book.id) }}">Voir détails</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Vous n'avez enregistré aucun livre.</p>
+  {% endif %}
+  <a href="{{ url_for('main.home') }}">Retour à l'accueil</a>
+</body>
+</html>
