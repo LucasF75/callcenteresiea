@@ -7,7 +7,11 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'une_clé_secrète'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bookly.db'
+
+    # Connexion à ta base MySQL readlist
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/readlist'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
     db.init_app(app)
 

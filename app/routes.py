@@ -4,5 +4,7 @@ from flask_login import login_required, current_user
 main = Blueprint('main', __name__)
 
 @main.route('/')
+@login_required  # Pour que seul un utilisateur connecté y ait accès
 def home():
-    return render_template('login.html', user=current_user)
+    return render_template('home.html', user=current_user)
+

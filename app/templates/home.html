@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+<head>
+  <title>Page d'accueil</title>
+</head>
+<body>
+  <h1>Bienvenue {{ user.name }} !</h1>
+  <p>Tu es connecté.</p>
+  <a href="{{ url_for('auth.logout') }}">Se déconnecter</a>
+</body>
+</html>

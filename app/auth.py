@@ -41,7 +41,7 @@ def signup():
         new_user = User(
             email=email,
             name=name,
-            password=generate_password_hash(password, method='sha256')
+            password=generate_password_hash(password,  method='pbkdf2:sha256')  # utilise la méthode par défaut (pbkdf2:sha256)
         )
         db.session.add(new_user)
         db.session.commit()
@@ -49,3 +49,10 @@ def signup():
         return redirect(url_for('main.home'))
 
     return render_template('signup.html', form=form)
+
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth.login'))
