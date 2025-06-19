@@ -3,7 +3,7 @@
 <head><title>Résultats - {{ genre }}</title></head>
 <body>
   <h1>Résultats pour le genre : {{ genre }}</h1>
-  <a href="{{ url_for('main.home') }}">← Retour à l'accueil</a>
+  <button onclick="window.history.back()">Retour</button>
 
   {% if books %}
     <ul>
