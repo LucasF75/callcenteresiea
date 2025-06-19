@@ -25,8 +25,7 @@
   {% endif %}
 
 
-    <a href="{{ url_for('auth.logout') }}">Se déconnecter</a> <br>
-
-  <a href="{{ url_for('main.home') }}">← Retour à l'accueil</a>
+  <button onclick="window.history.back()">Retour</button>
+  <a href="{{ url_for('auth.logout') }}">Se déconnecter</a> 
 </body>
 </html>
