@@ -1,11 +1,12 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
-import requests
-
-
-from app.models import SavedBook, Comment, BookLike
-
+from datetime import datetime
+from app.models import SavedBook, Comment, BookLike, RecentlyViewed
 from app import db
+import requests
+import random
+
+
 
 main = Blueprint('main', __name__)
 
@@ -46,7 +47,35 @@ def home():
                     'thumbnail': vi.get('imageLinks', {}).get('thumbnail')
                 })
 
-    return render_template('home.html', user=current_user, recommended_books=recommended_books, recommendations=recommendations)
+    # Livres récemment consultés
+    recent_books_raw = RecentlyViewed.query.filter_by(user_id=current_user.id)\
+                            .order_by(RecentlyViewed.timestamp.desc()).limit(5).all()
+
+    recent_books = []
+    for recent in recent_books_raw:
+        response = requests.get(f'https://www.googleapis.com/books/v1/volumes/{recent.book_id}')
+        if response.status_code == 200:
+            data = response.json()
+            volume_info = data.get('volumeInfo', {})
+            recent_books.append({
+                'id': recent.book_id,
+                'title': volume_info.get('title'),
+                'authors': volume_info.get('authors', []),
+                'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
+            })
+
+
+    quotes = [
+    "Lire, c'est rêver les yeux ouverts.",
+    "Un livre est un rêve que vous tenez entre vos mains.",
+    "Les livres sont des miroirs : on y voit que ce qu’on y porte.",
+    "Un lecteur vit mille vies avant de mourir.",
+    "Lire, c’est aller à la rencontre d’une chose qui va exister."
+]
+
+    random_quote = random.choice(quotes)
+
+    return render_template('home.html', user=current_user, recommended_books=recommended_books, recommendations=recommendations, random_quote=random_quote, recent_books=recent_books)
 
 @main.route('/search', methods=['GET', 'POST'])
 def search():
@@ -79,6 +108,15 @@ def book_detail(book_id):
         volume_info = data.get('volumeInfo', {})
         comments = Comment.query.filter_by(book_id=book_id).order_by(Comment.timestamp.desc()).all()
 
+        # Enregistrement dans l'historique
+        viewed = RecentlyViewed.query.filter_by(user_id=current_user.id, book_id=book_id).first()
+        if viewed:
+            viewed.timestamp = datetime.utcnow()  # mise à jour si déjà vu
+        else:
+            new_view = RecentlyViewed(user_id=current_user.id, book_id=book_id)
+            db.session.add(new_view)
+        db.session.commit()
+
         book = {
             'id': book_id,
             'title': volume_info.get('title'),
@@ -91,7 +129,6 @@ def book_detail(book_id):
         liked = BookLike.query.filter_by(user_id=current_user.id, book_id=book_id, liked=True).first() is not None
 
         return render_template('details.html', book=book, is_saved=is_saved, comments=comments, liked=liked)
-
 
     flash("Livre introuvable.")
     return redirect(url_for('main.search'))
@@ -162,6 +199,28 @@ def like_book(book_id):
     return redirect(url_for('main.book_detail', book_id=book_id))
 
 
+@main.route('/liked')
+@login_required
+def liked_books():
+    liked = BookLike.query.filter_by(user_id=current_user.id, liked=True).all()
+    books = []
+
+    for entry in liked:
+        response = requests.get(f"https://www.googleapis.com/books/v1/volumes/{entry.book_id}")
+        if response.status_code == 200:
+            data = response.json()
+            volume_info = data.get('volumeInfo', {})
+            books.append({
+                'id': entry.book_id,
+                'title': volume_info.get('title', 'Titre inconnu'),
+                'authors': volume_info.get('authors', []),
+                'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
+            })
+
+    return render_template('liked.html', books=books)
+
+
+
 
 @main.route('/book/<book_id>/comment', methods=['POST'])
 @login_required
@@ -178,20 +237,52 @@ def comment_book(book_id):
 @main.route('/profile')
 @login_required
 def profile():
-    saved_books_raw = SavedBook.query.filter_by(user_id=current_user.id).all()
-    saved_books = []
-
-    for saved in saved_books_raw:
-        response = requests.get(f'https://www.googleapis.com/books/v1/volumes/{saved.book_id}')
-        if response.status_code == 200:
-            data = response.json()
-            volume_info = data.get('volumeInfo', {})
-            saved_books.append({
-                'id': saved.book_id,
-                'title': volume_info.get('title', 'Titre inconnu'),
-                'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
-            })
 
     user_comments = Comment.query.filter_by(user_id=current_user.id).all()
 
-    return render_template('profile.html', user=current_user, saved_books=saved_books, comments=user_comments)
+    return render_template('profile.html', user=current_user, comments=user_comments)
+
+
+@main.route('/search-by-genre', methods=['POST'])
+@login_required
+def search_by_genre():
+    genre = request.form.get('genre')
+    books = []
+
+    if genre:
+        url = f'https://www.googleapis.com/books/v1/volumes?q=subject:{genre}&maxResults=10'
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            for item in data.get('items', []):
+                volume_info = item.get('volumeInfo', {})
+                books.append({
+                    'id': item.get('id'),
+                    'title': volume_info.get('title'),
+                    'authors': volume_info.get('authors', []),
+                    'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
+                })
+
+    return render_template('genre.html', books=books, genre=genre)
+
+
+@main.route('/api/recent-books')
+@login_required
+def api_recent_books():
+    recent_books_raw = RecentlyViewed.query.filter_by(user_id=current_user.id) \
+                        .order_by(RecentlyViewed.timestamp.desc()).limit(5).all()
+
+    recent_books = []
+    for recent in recent_books_raw:
+        response = requests.get(f'https://www.googleapis.com/books/v1/volumes/{recent.book_id}')
+        if response.status_code == 200:
+            data = response.json()
+            volume_info = data.get('volumeInfo', {})
+            recent_books.append({
+                'id': recent.book_id,
+                'title': volume_info.get('title'),
+                'authors': volume_info.get('authors', []),
+                'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
+            })
+
+    return jsonify(recent_books)

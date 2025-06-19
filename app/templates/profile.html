@@ -1,32 +1,15 @@
 <!doctype html>
 <html>
-<head><title>Profil de {{ user.name }}</title></head>
+<head><title>ReadList</title></head>
 <body>
   <h1>Profil de {{ user.name }}</h1>
   <p>Email : {{ user.email }}</p>
 
-  <h2>📚 Livres enregistrés</h2>
-  {% if saved_books %}
-    <ul>
-      {% for book in saved_books %}
-  <li>
-    <form action="{{ url_for('main.save_book', book_id=book.id) }}" method="post" style="display:inline;">
-      <input type="hidden" name="action" value="delete">
-      {% if book.thumbnail %}
-        <img src="{{ book.thumbnail }}" alt="Couverture" style="height: 100px;">
-      {% endif %}
-      <p>{{ book.title }}</p>
-      <button type="submit">🗑 Supprimer</button>
-    </form>
-    <a href="{{ url_for('main.book_detail', book_id=book.id) }}">[Détails]</a>
-  </li>
-{% endfor %}
 
+  <a href="{{ url_for('main.saved_books') }}">📚 Voir mes livres enregistrés</a>
+  <br>
+  <a href="{{ url_for('main.liked_books') }}">❤️ Voir mes livres likés</a>
 
-    </ul>
-  {% else %}
-    <p>Aucun livre enregistré.</p>
-  {% endif %}
 
   <h2>💬 Commentaires postés</h2>
   {% if comments %}
