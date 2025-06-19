@@ -3,7 +3,8 @@ from flask_login import login_required, current_user
 import requests
 
 
-from app.models import SavedBook, Comment
+from app.models import SavedBook, Comment, BookLike
+
 from app import db
 
 main = Blueprint('main', __name__)
@@ -11,7 +12,41 @@ main = Blueprint('main', __name__)
 @main.route('/')
 @login_required  # Pour que seul un utilisateur connecté y ait accès
 def home():
-    return render_template('home.html', user=current_user)
+    # Recommandations générales (déjà faites, ici juste en rappel)
+    recommended_books = []  
+    # ... ton code pour remplir recommended_books ...
+
+    # --- Recommandations basées sur les likes ---
+    liked_books = BookLike.query.filter_by(user_id=current_user.id, liked=True).all()
+
+    genres_count = {}
+
+    for liked in liked_books:
+        response = requests.get(f'https://www.googleapis.com/books/v1/volumes/{liked.book_id}')
+        if response.status_code == 200:
+            data = response.json()
+            volume_info = data.get('volumeInfo', {})
+            categories = volume_info.get('categories', [])
+            for category in categories:
+                genres_count[category] = genres_count.get(category, 0) + 1
+
+    recommendations = []
+    if genres_count:
+        top_genre = max(genres_count, key=genres_count.get)
+        url = f'https://www.googleapis.com/books/v1/volumes?q=subject:{top_genre}&maxResults=5'
+        resp = requests.get(url)
+        if resp.status_code == 200:
+            data = resp.json()
+            for item in data.get('items', []):
+                vi = item.get('volumeInfo', {})
+                recommendations.append({
+                    'id': item.get('id'),
+                    'title': vi.get('title'),
+                    'authors': vi.get('authors', []),
+                    'thumbnail': vi.get('imageLinks', {}).get('thumbnail')
+                })
+
+    return render_template('home.html', user=current_user, recommended_books=recommended_books, recommendations=recommendations)
 
 @main.route('/search', methods=['GET', 'POST'])
 def search():
@@ -53,8 +88,9 @@ def book_detail(book_id):
         }
 
         is_saved = SavedBook.query.filter_by(user_id=current_user.id, book_id=book_id).first() is not None
+        liked = BookLike.query.filter_by(user_id=current_user.id, book_id=book_id, liked=True).first() is not None
 
-        return render_template('details.html', book=book, is_saved=is_saved, comments=comments)
+        return render_template('details.html', book=book, is_saved=is_saved, comments=comments, liked=liked)
 
 
     flash("Livre introuvable.")
@@ -102,6 +138,29 @@ def saved_books():
             })
 
     return render_template('saved.html', books=books)
+
+
+@main.route('/like-book/<book_id>', methods=['POST'])
+@login_required
+def like_book(book_id):
+    action = request.form.get('action')
+    like_entry = BookLike.query.filter_by(user_id=current_user.id, book_id=book_id).first()
+
+    if action == 'like':
+        if not like_entry:
+            like_entry = BookLike(user_id=current_user.id, book_id=book_id, liked=True)
+            db.session.add(like_entry)
+        else:
+            like_entry.liked = True
+        db.session.commit()
+        flash("Livre aimé !")
+    elif action == 'unlike':
+        if like_entry:
+            db.session.delete(like_entry)
+            db.session.commit()
+            flash("Like supprimé.")
+    return redirect(url_for('main.book_detail', book_id=book_id))
+
 
 
 @main.route('/book/<book_id>/comment', methods=['POST'])

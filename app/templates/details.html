@@ -17,6 +17,16 @@
     {% endif %}
   </form>
 
+  <form method="POST" action="{{ url_for('main.like_book', book_id=book.id) }}">
+    {% if liked %}
+      <button type="submit" name="action" value="unlike">💔 Unlike</button>
+    {% else %}
+      <button type="submit" name="action" value="like">❤️ Like</button>
+    {% endif %}
+  </form>
+
+
+
   <h3>Commentaires</h3>
 
     <form method="POST" action="{{ url_for('main.comment_book', book_id=book.id) }}">
