@@ -4,7 +4,7 @@
   <title>ReadList</title>
 </head>
 <body>
-   <h1>Bienvenue {{ user.name }} sur ReadList 📚</h1>
+   <h1>ReadList 📚</h1>
   <form action="{{ url_for('main.search') }}" method="POST">
     <input type="text" name="query" placeholder="Rechercher un livre...">
     <input type="submit" value="Rechercher">
@@ -18,7 +18,7 @@
 {% endif %}
 
 
-<h2>🔍 Rechercher par genre</h2>
+<h2>Let's discover new genres...</h2>
 <form action="{{ url_for('main.search_by_genre') }}" method="POST">
   <select name="genre">
     <option value="Science Fiction">Science Fiction</option>
@@ -36,7 +36,7 @@
 
 
 
-  <h2>Recommandations basées sur vos likes</h2>
+  <h2>RECOMMENDATION</h2>
   {% if recommendations %}
     <ul>
       {% for book in recommendations %}
@@ -57,7 +57,7 @@
 
 
 
-  <h2>📚 Livres récemment consultés</h2>
+  <h2>RECENT</h2>
 <div id="recent-books-container">
     {% if recent_books %}
   <ul>

@@ -3,6 +3,7 @@
   <head><title>ReadList</title></head>
   <body>
     <h2>Create account</h2>
+    <p>A good book  is always nice to share it...</p>
     <form method="POST" action="{{ url_for('auth.signup') }}">
       {{ form.hidden_tag() }}
       {{ form.username.label }} {{ form.username() }}<br>
