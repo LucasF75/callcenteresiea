@@ -1,31 +1,49 @@
 <!doctype html>
 <html>
-<head><title>ReadList</title></head>
+<head>
+    <title>ReadList</title>
+</head>
 <body>
-  <h1>Profil de {{ user.name }}</h1>
-  <p>Email : {{ user.email }}</p>
+    {% extends "base.html" %}
 
+    {% block title %}Profil - ReadList{% endblock %}
 
-  <a href="{{ url_for('main.saved_books') }}">📚 Voir mes livres enregistrés</a>
-  <br>
-  <a href="{{ url_for('main.liked_books') }}">❤️ Voir mes livres likés</a>
-
-
-  <h2>💬 Commentaires postés</h2>
-  {% if comments %}
-    <ul>
-      {% for comment in comments %}
-        <li>
-          Sur le livre <strong>{{ comment.book_id }}</strong> : {{ comment.content }}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>Aucun commentaire encore.</p>
-  {% endif %}
-
-
-  <button onclick="window.history.back()">Retour</button>
-  <a href="{{ url_for('auth.logout') }}">Se déconnecter</a> 
+    {% block content %}
+     
+          <div class="title">READLIST</div>
+          <div class="logo">
+            <svg width="60" height="60" fill="none" stroke="#d9b4f3" stroke-width="3" viewBox="0 0 24 24">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M20 19.5A2.5 2.5 0 0 0 17.5 17H4"></path>
+              <path d="M6 4v15"></path>
+              <path d="M18 4v15"></path>
+              <path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"></path>
+            </svg>
+          </div>
+          <div class="subtitle">👤 Profil de {{ user.name }}</div>
+          <p>Email : {{ user.email }}</p>
+          <div style="margin: 20px 0;">
+            <a href="{{ url_for('main.saved_books') }}">📚 Voir mes livres enregistrés</a><br>
+            <a href="{{ url_for('main.liked_books') }}">❤️ Voir mes livres likés</a>
+          </div>
+          <h3>💬 Commentaires postés</h3>
+          {% if comments %}
+            <ul>
+              {% for comment in comments %}
+                <li>
+                  Sur le livre <strong>{{ comment.book_id }}</strong> : {{ comment.content }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>Aucun commentaire encore.</p>
+          {% endif %}
+          <div style="margin-top: 20px;">
+            <button onclick="window.history.back()" style="margin-right: 10px;">Retour</button>
+            <a href="{{ url_for('auth.logout') }}">Se déconnecter</a>
+          </div>
+        </div>
+      </div>
+    {% endblock %}
 </body>
 </html>

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}ReadList{% endblock %}</title>
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+  <!-- Google Fonts ou autre si besoin -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- En-tête -->
+  <header class="logo">
+    <span>📚 READLIST</span>
+  </header>
+
+  <!-- Contenu de la page -->
+  <main>
+    {% block content %}
+    <!-- Le contenu des autres pages viendra ici -->
+    {% endblock %}
+  </main>
+
+  <!-- Footer (optionnel) -->
+  <footer style="text-align:center; margin-top: 40px; font-size: 13px; color: #777;">
+    © 2025 ReadList. Tous droits réservés.
+  </footer>
+
+</body>
+</html>

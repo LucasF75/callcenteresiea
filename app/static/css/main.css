@@ -1,0 +1,212 @@
+/* --- RESET / BASE --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0d0d0d;
+  font-family: 'Inter', sans-serif;
+  color: #fff; /* <-- White text */
+  padding: 0;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+a {
+  color: #efc6f3;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* --- HEADER / LOGO --- */
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+/* --- SEARCH BAR --- */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.search-bar input[type="text"] {
+  width: 300px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.search-bar button {
+  padding: 10px 20px;
+  background-color: #efc6f3;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+}
+
+/* --- BOOK LIST --- */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 20px;
+}
+
+.book-grid img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.book-item {
+  text-align: center;
+  font-size: 14px;
+}
+
+/* --- LOGIN / SIGNUP FORM --- */
+.auth-form {
+  max-width: 400px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+}
+
+.auth-form input[type="submit"] {
+  background-color: #efc6f3;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* --- QUOTE --- */
+.quote {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 18px;
+  text-align: center;
+  margin: 30px 0;
+  color: #ccc;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .search-bar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-bar input[type="text"] {
+    width: 90%;
+    margin: 0 0 10px 0;
+  }
+
+  .auth-form {
+    padding: 10px;
+  }
+}
+.login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full viewport height */
+  background-color: #0d0d0d;
+}
+
+.login-box {
+  background-color: #111;
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  color: white;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+}
+
+.login-box .title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.login-box .logo {
+  font-size: 40px;
+  margin: 10px 0;
+  color: #d9b4f3;
+}
+
+.login-box .subtitle {
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 12px;
+  background-color: #ddd;
+  color: black;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: #d9b4f3;
+  color: black;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.signup {
+  margin-top: 20px;
+  font-size: 0.95rem;
+}
+
+.signup a {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+/* Responsive for mobile */
+@media (max-width: 500px) {
+  .login-box {
+    padding: 20px 5px;
+  }
+}

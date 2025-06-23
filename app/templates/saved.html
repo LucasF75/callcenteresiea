@@ -1,29 +1,43 @@
-<!doctype html>
-<html>
-<head><title>ReadList</title></head>
-<body>
-  <h1>📚 Vos livres enregistrés</h1>
+{% extends "base.html" %}
 
-  {% if books %}
-    <ul>
-      {% for book in books %}
-        <li>
-          <form action="{{ url_for('main.save_book', book_id=book.id) }}" method="post" style="display:inline;">
-            <input type="hidden" name="action" value="delete">
-            {% if book.thumbnail %}
-              <img src="{{ book.thumbnail }}" alt="Couverture" style="height: 100px;">
-            {% endif %}
-            <p>{{ book.title }}</p>
-            <button type="submit">🗑 Supprimer</button>
-          </form>
-          <a href="{{ url_for('main.book_detail', book_id=book.id) }}">[Détails]</a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>Aucun livre enregistré.</p>
-  {% endif %}
+{% block title %}ReadList{% endblock %}
 
-  <a href="{{ url_for('main.profile') }}">← Retour au profil</a>
-</body>
-</html>
+{% block content %}
+  <div class="login-section">
+    <div class="login-box">
+      <div class="title">READLIST</div>
+      <div class="logo">
+        <svg width="60" height="60" fill="none" stroke="#d9b4f3" stroke-width="3" viewBox="0 0 24 24">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M20 19.5A2.5 2.5 0 0 0 17.5 17H4"></path>
+          <path d="M6 4v15"></path>
+          <path d="M18 4v15"></path>
+          <path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"></path>
+        </svg>
+      </div>
+      <div class="subtitle">📚 Vos livres enregistrés</div>
+      {% if books %}
+        <ul>
+          {% for book in books %}
+            <li style="margin-bottom: 20px;">
+              <form action="{{ url_for('main.save_book', book_id=book.id) }}" method="post" style="display:inline;">
+                <input type="hidden" name="action" value="delete">
+                {% if book.thumbnail %}
+                  <img src="{{ book.thumbnail }}" alt="Couverture" style="height: 100px; vertical-align: middle;">
+                {% endif %}
+                <span style="font-weight: bold;">{{ book.title }}</span>
+                <button type="submit" style="margin-left: 10px;">🗑 Supprimer</button>
+              </form>
+              <a href="{{ url_for('main.book_detail', book_id=book.id) }}" style="margin-left: 10px;">[Détails]</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>Aucun livre enregistré.</p>
+      {% endif %}
+      <div class="signup" style="margin-top: 20px;">
+        <a href="{{ url_for('main.profile') }}">← Retour au profil</a>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

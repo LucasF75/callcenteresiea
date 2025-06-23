@@ -5,10 +5,17 @@ from app.models import SavedBook, Comment, BookLike, RecentlyViewed
 from app import db
 import requests
 import random
-
-
+from app.forms import LoginForm
 
 main = Blueprint('main', __name__)
+
+@main.route("/login", methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        # login logic here
+        pass
+    return render_template("login.html", form=form)
 
 @main.route('/')
 @login_required  # Pour que seul un utilisateur connecté y ait accès
@@ -161,9 +168,8 @@ def save_book(book_id):
 def saved_books():
     saved = SavedBook.query.filter_by(user_id=current_user.id).all()
     books = []
-
     for item in saved:
-        response = requests.get(f"https://www.googleapis.com/books/v1/volumes/{item.book_id}")
+        response = requests.get(f'https://www.googleapis.com/books/v1/volumes/{item.book_id}')
         if response.status_code == 200:
             data = response.json()
             volume_info = data.get('volumeInfo', {})
@@ -173,7 +179,6 @@ def saved_books():
                 'authors': volume_info.get('authors', []),
                 'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
             })
-
     return render_template('saved.html', books=books)
 
 

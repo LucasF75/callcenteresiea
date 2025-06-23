@@ -1,137 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ReadList - Login</title>
-<style>
-  /* Reset basique */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    background-color: #111; /* fond noir */
-    font-family: 'Arial', sans-serif;
-    color: #eee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-    text-align: center;
-  }
-  /* Logo livre */
-  .logo {
-    font-size: 3rem;
-    color: #d3afd3; /* violet clair */
-    margin-bottom: 0.3rem;
-  }
-  .title {
-    font-family: 'Georgia', serif;
-    font-weight: bold;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-    margin-bottom: 0.3rem;
-  }
-  .subtitle {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-  }
-  /* Form */
-  form {
-    width: 320px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-  input[type="text"],
-  input[type="password"] {
-    background: #ccc;
-    border: none;
-    border-radius: 12px;
-    padding: 0.8rem 1.2rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #111;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    outline: none;
-    transition: background-color 0.3s ease;
-  }
-  input[type="text"]::placeholder,
-  input[type="password"]::placeholder {
-    color: #999;
-  }
-  input[type="text"]:focus,
-  input[type="password"]:focus {
-    background: #e6d6e6;
-  }
-  button {
-    background-color: #d3afd3;
-    color: #111;
-    font-weight: 700;
-    font-size: 1.1rem;
-    padding: 0.75rem;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-  }
-  button:hover {
-    background-color: #b07eb3;
-  }
-  /* Signup link */
-  .signup {
-    margin-top: 1.5rem;
-    font-size: 0.85rem;
-    color: #eee;
-  }
-  .signup a {
-    color: #d3afd3;
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: pointer;
-  }
+{% extends "base.html" %}
 
-  .input-field {
-  background: #ccc;
-  border: none;
-  border-radius: 12px;
-  padding: 0.8rem 1.2rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #111;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  outline: none;
-  transition: background-color 0.3s ease;
-  margin-bottom: 1.2rem; /* pour espacer les champs */
-}
-.input-field::placeholder {
-  color: #999;
-}
-.input-field:focus {
-  background: #e6d6e6;
-}
+{% block title %}Login - ReadList{% endblock %}
 
-</style>
-</head>
-<body>
-  <div class="title">READLIST</div>
-  <div class="logo">📖</div>
-  <div class="subtitle">Read it. Rate it. Share it.</div>
-
-  <form method="POST" action="{{ url_for('auth.login') }}">
-    {{ form.hidden_tag() }}
-    {{ form.email(class_="input-field", placeholder="EMAIL OR USERNAME", autocomplete="username") }}
-    {{ form.password(class_="input-field", placeholder="PASSWORD", autocomplete="current-password") }}
-    <button type="submit">LOG IN</button>
-  </form>
-  <div class="signup">
-    Don’t have a account ? <a href="{{ url_for('auth.signup') }}">SIGNUP</a>
+{% block content %}
+  <div class="login-section">
+    <div class="login-box">
+      <div class="title">READLIST</div>
+      <div class="logo">
+        <!-- SVG icon here -->
+        <svg width="60" height="60" fill="none" stroke="#d9b4f3" stroke-width="3" viewBox="0 0 24 24">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M20 19.5A2.5 2.5 0 0 0 17.5 17H4"></path>
+          <path d="M6 4v15"></path>
+          <path d="M18 4v15"></path>
+          <path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"></path>
+        </svg>
+      </div>
+      <div class="subtitle">Read it. Rate it. Share it.</div>
+      <form method="POST" class="auth-form">
+        {{ form.hidden_tag() }}
+        {{ form.email(class="input-field", placeholder="EMAIL") }}
+        {{ form.password(class="input-field", placeholder="PASSWORD") }}
+        <button type="submit">LOG IN</button>
+      </form>
+      <div class="signup">
+        Don’t have a account ? <a href="{{ url_for('auth.signup') }}">SIGNUP</a>
+      </div>
+    </div>
   </div>
-</body>
-</html>
+{% endblock %}

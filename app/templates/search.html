@@ -1,14 +1,26 @@
-{% for book in books %}
-  <li>
-    <h3>{{ book.title }}</h3>
-    {% if book.authors %}
-      <p>Auteurs : {{ book.authors | join(', ') }}</p>
-    {% endif %}
-    {% if book.thumbnail %}
-      <img src="{{ book.thumbnail }}" alt="Couverture">
-    {% endif %}
-    <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
-      Voir les détails
-    </a>
-  </li>
-{% endfor %}
+{% extends "base.html" %}
+
+{% block title %}Search - ReadList{% endblock %}
+
+{% block content %}
+  <div class="login-section">
+    <div class="login-box">
+      <div class="title">Search Books</div>
+      <form method="POST" class="auth-form">
+        <input type="text" name="query" class="input-field" placeholder="Search for a book..." required>
+        <button type="submit">SEARCH</button>
+      </form>
+      {% if books %}
+        <div class="search-results">
+          {% for book in books %}
+            <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="book-item" style="text-decoration: none; color: inherit;">
+              <img src="{{ book.thumbnail }}" alt="{{ book.title }}">
+              <div>{{ book.title }}</div>
+              <div>{{ book.authors|join(', ') }}</div>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
