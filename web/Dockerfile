@@ -12,6 +12,3 @@ RUN pip install --break-system-packages --no-cache-dir -r requirements.txt
 
 # Exposer le port Flask par défaut
 EXPOSE 5000
-
-# Lancer l'application
-CMD ["python", "run.py"]

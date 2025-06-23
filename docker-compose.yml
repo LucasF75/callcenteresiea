@@ -23,11 +23,11 @@ services:
       - .:/app
     working_dir: /app
     environment:
-      DATABASE_URL: mysql+pymysql://myuser:mypass@db/readlist
+      DATABASE_URL: mysql+pymysql://user:userpass@db/readlist
     depends_on:
       - db
     command: >
-      sh -c "sleep 10 && flask run --host=0.0.0.0"
+      sh -c "sleep 10 && python run.py"
 
 
 volumes:

@@ -4,3 +4,4 @@ flask-wtf
 email-validator
 pymysql
 requests
+cryptography
