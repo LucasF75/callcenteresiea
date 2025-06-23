@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head><title>{{ book.title }}</title></head>
+<body>
+  <h2>{{ book.title }}</h2>
+  <p><strong>Auteur(s):</strong> {{ book.authors | join(', ') }}</p>
+  {% if book.thumbnail %}
+    <img src="{{ book.thumbnail }}" alt="couverture">
+  {% endif %}
+  <p>{{ book.description | safe }}</p>
+
+  <form method="POST" action="{{ url_for('main.save_book', book_id=book.id) }}">
+    {% if is_saved %}
+      <button type="submit" name="action" value="delete">Supprimer des enregistrements</button>
+    {% else %}
+      <button type="submit" name="action" value="save">Enregistrer</button>
+    {% endif %}
+  </form>
+
+  <form method="POST" action="{{ url_for('main.like_book', book_id=book.id) }}">
+    {% if liked %}
+      <button type="submit" name="action" value="unlike">💔 Unlike</button>
+    {% else %}
+      <button type="submit" name="action" value="like">❤️ Like</button>
+    {% endif %}
+  </form>
+
+
+
+  <h3>Commentaires</h3>
+
+    <form method="POST" action="{{ url_for('main.comment_book', book_id=book.id) }}">
+    <textarea name="comment" required></textarea><br>
+    <button type="submit">Envoyer</button>
+    </form>
+
+    <ul>
+  {% for comment in comments %}
+    <li><strong>{{ comment.user.name }}</strong> : {{ comment.content }}</li>
+  {% endfor %}
+</ul>
+  
+
+  <button onclick="window.history.back()">Retour</button>
+
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: readlist
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      
+  web:
+    build: ./web
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      DATABASE_URL: mysql+pymysql://user:userpass@db/readlist
+    depends_on:
+      - db
+    command: >
+      sh -c "sleep 10 && python run.py"
+
+
+volumes:
+  db_data:

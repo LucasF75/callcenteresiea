@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head><title>ReadList</title></head>
+<body>
+  <h1>Profil de {{ user.name }}</h1>
+  <p>Email : {{ user.email }}</p>
+
+
+  <a href="{{ url_for('main.saved_books') }}">📚 Voir mes livres enregistrés</a>
+  <br>
+  <a href="{{ url_for('main.liked_books') }}">❤️ Voir mes livres likés</a>
+
+
+  <h2>💬 Commentaires postés</h2>
+  {% if comments %}
+    <ul>
+      {% for comment in comments %}
+        <li>
+          Sur le livre <strong>{{ comment.book_id }}</strong> : {{ comment.content }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Aucun commentaire encore.</p>
+  {% endif %}
+
+
+  <button onclick="window.history.back()">Retour</button>
+  <a href="{{ url_for('auth.logout') }}">Se déconnecter</a> 
+</body>
+</html>

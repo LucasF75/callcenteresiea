@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head><title>ReadList</title></head>
+  <body>
+    <h2>Create account</h2>
+    <p>A good book  is always nice to share it...</p>
+    <form method="POST" action="{{ url_for('auth.signup') }}">
+      {{ form.hidden_tag() }}
+      {{ form.username.label }} {{ form.username() }}<br>
+      {{ form.email.label }} {{ form.email() }}<br>
+      {{ form.password.label }} {{ form.password() }}<br>
+      {{ form.submit() }}
+    </form>
+    <a href="{{ url_for('auth.login') }}">Already have an account?</a>
+  </body>
+</html>

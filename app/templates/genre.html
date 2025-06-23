@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head><title>Résultats - {{ genre }}</title></head>
+<body>
+  <h1>Résultats pour le genre : {{ genre }}</h1>
+  <button onclick="window.history.back()">Retour</button>
+
+  {% if books %}
+    <ul>
+      {% for book in books %}
+        <li>
+          <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
+            {% if book.thumbnail %}
+              <img src="{{ book.thumbnail }}" alt="Couverture" style="height: 100px;">
+            {% endif %}
+            <p>{{ book.title }}</p>
+            <p>Auteurs : {{ book.authors | join(', ') }}</p>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Aucun livre trouvé pour ce genre.</p>
+  {% endif %}
+</body>
+</html>

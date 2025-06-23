@@ -1,0 +1,14 @@
+{% for book in books %}
+  <li>
+    <h3>{{ book.title }}</h3>
+    {% if book.authors %}
+      <p>Auteurs : {{ book.authors | join(', ') }}</p>
+    {% endif %}
+    {% if book.thumbnail %}
+      <img src="{{ book.thumbnail }}" alt="Couverture">
+    {% endif %}
+    <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
+      Voir les détails
+    </a>
+  </li>
+{% endfor %}

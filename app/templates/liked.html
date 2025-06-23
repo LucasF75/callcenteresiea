@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head><title>ReadList</title></head>
+<body>
+  <h1>❤️ Vos livres likés</h1>
+
+  {% if books %}
+    <ul>
+      {% for book in books %}
+        <li>
+          <form action="{{ url_for('main.like_book', book_id=book.id) }}" method="post" style="display:inline;">
+            <input type="hidden" name="action" value="unlike">
+            {% if book.thumbnail %}
+              <img src="{{ book.thumbnail }}" alt="Couverture" style="height: 100px;">
+            {% endif %}
+            <p>{{ book.title }}</p>
+            <button type="submit">💔 Retirer le like</button>
+          </form>
+          <a href="{{ url_for('main.book_detail', book_id=book.id) }}">[Détails]</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Aucun livre liké.</p>
+  {% endif %}
+
+  <a href="{{ url_for('main.profile') }}">← Retour au profil</a>
+</body>
+</html>
