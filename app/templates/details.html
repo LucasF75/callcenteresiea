@@ -4,31 +4,33 @@
 
 {% block content %}
     <div class="login-section">
-        <div class="login-box" style="max-width:600px;">
-            <div class="title">{{ book.title }}</div>
+        <div class="book-details-container" style="max-width: 800px; margin: 0 auto; padding: 2em; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <h1 style="margin-bottom: 0.5em;">{{ book.title }}</h1>
             <p><strong>Auteur(s):</strong> {{ book.authors | join(', ') }}</p>
             {% if book.thumbnail %}
             <img src="{{ book.thumbnail }}" alt="couverture" style="max-width:200px; margin-bottom: 1em;">
             {% endif %}
             <p>{{ book.description | safe }}</p>
 
-            <form method="POST" action="{{ url_for('main.save_book', book_id=book.id) }}" style="display:inline;">
-                {% if is_saved %}
-                <button type="submit" name="action" value="delete">Supprimer des enregistrements</button>
-                {% else %}
-                <button type="submit" name="action" value="save">Enregistrer</button>
-                {% endif %}
-            </form>
+            <div style="margin: 1.5em 0;">
+                <form method="POST" action="{{ url_for('main.save_book', book_id=book.id) }}" style="display:inline;">
+                    {% if is_saved %}
+                    <button type="submit" name="action" value="delete">Supprimer des enregistrements</button>
+                    {% else %}
+                    <button type="submit" name="action" value="save">Enregistrer</button>
+                    {% endif %}
+                </form>
 
-            <form method="POST" action="{{ url_for('main.like_book', book_id=book.id) }}" style="display:inline;">
-                {% if liked %}
-                <button type="submit" name="action" value="unlike">💔 Unlike</button>
-                {% else %}
-                <button type="submit" name="action" value="like">❤️ Like</button>
-                {% endif %}
-            </form>
+                <form method="POST" action="{{ url_for('main.like_book', book_id=book.id) }}" style="display:inline;">
+                    {% if liked %}
+                    <button type="submit" name="action" value="unlike">💔 Unlike</button>
+                    {% else %}
+                    <button type="submit" name="action" value="like">❤️ Like</button>
+                    {% endif %}
+                </form>
+            </div>
 
-            <div style="margin-top:2em;">
+            <section style="margin-top:2em;">
                 <h3>Commentaires</h3>
                 <form method="POST" action="{{ url_for('main.comment_book', book_id=book.id) }}">
                     <textarea name="comment" class="input-field" style="width:100%;" required></textarea><br>
@@ -39,7 +41,7 @@
                     <li><strong>{{ comment.user.name }}</strong> : {{ comment.content }}</li>
                     {% endfor %}
                 </ul>
-            </div>
+            </section>
 
             <button onclick="window.history.back()" style="margin-top:1em;">Retour</button>
         </div>
