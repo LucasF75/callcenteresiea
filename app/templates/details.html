@@ -2,6 +2,12 @@
 
 {% block title %}{{ book.title }} - ReadList{% endblock %}
 
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/details.css') }}">
+{% endblock %}
+
 {% block content %}
     <div class="login-section">
         <div class="book-details-container" style="max-width: 800px; margin: 0 auto; padding: 2em; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
@@ -10,7 +16,16 @@
             {% if book.thumbnail %}
             <img src="{{ book.thumbnail }}" alt="couverture" style="max-width:200px; margin-bottom: 1em;">
             {% endif %}
-            <p>{{ book.description | safe }}</p>
+            {% if book.description %}
+            <div class="book-description">
+              <strong>Description :</strong>
+              <p>{{ book.description }}</p>
+            </div>
+            {% else %}
+            <div class="book-description">
+              <em>Aucune description disponible.</em>
+            </div>
+            {% endif %}
 
             <div style="margin: 1.5em 0;">
                 <form method="POST" action="{{ url_for('main.save_book', book_id=book.id) }}" style="display:inline;">

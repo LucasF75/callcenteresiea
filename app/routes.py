@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, login_user
 from datetime import datetime
-from app.models import SavedBook, Comment, BookLike, RecentlyViewed
+from app.models import SavedBook, Comment, BookLike, RecentlyViewed, User
 from app import db
 import requests
 import random
-from app.forms import LoginForm
+from app.forms import LoginForm, RegisterForm
+from werkzeug.security import generate_password_hash
 
 main = Blueprint('main', __name__)
 
@@ -13,8 +14,17 @@ main = Blueprint('main', __name__)
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        # login logic here
-        pass
+        user = User.query.filter_by(email=form.email.data).first()
+        print("User:", user)
+        print("Password entered:", form.password.data)
+        if user:
+            print("Password hash in DB:", user.password)
+            print("Password check:", user.check_password(form.password.data))
+        if user and user.check_password(form.password.data):
+            login_user(user)
+            return redirect(url_for('main.home'))
+        else:
+            flash('Email ou mot de passe incorrect.')
     return render_template("login.html", form=form)
 
 @main.route('/')
@@ -291,3 +301,15 @@ def api_recent_books():
             })
 
     return jsonify(recent_books)
+
+@main.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data)
+        user = User(email=form.email.data, password=hashed_password, name=form.name.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Compte créé avec succès, vous pouvez vous connecter.')
+        return redirect(url_for('main.login'))
+    return render_template('signup.html', form=form)

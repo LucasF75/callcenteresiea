@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}ReadList{% endblock %}
-
+   {% block extra_css %}
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/saved.css') }}">
+    {% endblock %}
 {% block content %}
   <div class="login-section">
     <div class="login-box">

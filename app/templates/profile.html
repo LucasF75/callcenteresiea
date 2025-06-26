@@ -8,8 +8,12 @@
 
     {% block title %}Profil - ReadList{% endblock %}
 
+    {% block extra_css %}
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    {% endblock %}
+
     {% block content %}
-     
+      <div class="profile-container"></div>
           <div class="title">READLIST</div>
           <div class="logo">
             <svg width="60" height="60" fill="none" stroke="#d9b4f3" stroke-width="3" viewBox="0 0 24 24">
