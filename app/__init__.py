@@ -1,9 +1,13 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+<<<<<<< HEAD
 from flask_migrate import Migrate
 
 
+=======
+import os
+>>>>>>> origin
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -13,7 +17,7 @@ def create_app():
     app.config['SECRET_KEY'] = 'une_clé_secrète'
 
     # Connexion à ta base MySQL readlist
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/readlist'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
