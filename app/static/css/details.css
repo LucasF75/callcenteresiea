@@ -1,24 +1,117 @@
-.book-details-container {
+/* detail.css */
+body {
+  background-color: #0d0d0d;
+  font-family: 'Helvetica Neue', sans-serif;
+  padding: 2rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   max-width: 800px;
-  margin: 0 auto;
-  padding: 2em;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  color: #222;
+  margin: auto;
 }
 
-.book-details-container h1 {
-  margin-bottom: 0.5em;
+.cover {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
-.book-details-container img {
-  max-width: 200px;
-  margin-bottom: 1em;
+img {
+  width: 120px;
 }
 
-.book-description {
-  margin-top: 1em;
-  color: #444;
-  font-size: 1em;
+h2 {
+  font-size: 2rem;
+  margin: 1rem 0 0.5rem 0;
+  text-align: center;
+  width: 100%;
+}
+
+.author {
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+
+.description {
+  text-align: left;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.active {
+  background-color: #aaa;
+  color: #000;
+}
+
+.inactive {
+  background-color: #b19cd9; /* violet */
+  color: #000;
+}
+
+form.comment-form {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+textarea {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+}
+
+button.send {
+  padding: 0.7rem 1.2rem;
+  background-color: #b19cd9; /* violet */
+  border: none;
+  border-radius: 10px;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+li {
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.back-btn {
+  margin-top: 2rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  border: none;
+  background-color: #b19cd9; /* violet */
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
 }

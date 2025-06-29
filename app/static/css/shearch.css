@@ -1,57 +1,35 @@
-.search-section {
-  padding: 40px 0;
-  background: #f7f7fa;
-  min-height: 80vh;
-}
+/* Spécifique à la page de recherche */
 
 .search-bar {
+  margin: 2rem auto;
   display: flex;
-  justify-content: center;
-  margin-bottom: 2em;
+  max-width: 600px;
+  width: 100%;
+  gap: 0.5rem;
 }
 
 .search-bar input[type="text"] {
-  width: 350px;
-  padding: 12px;
-  border-radius: 8px 0 0 8px;
-  border: 1px solid #ddd;
+  flex-grow: 1;
+  padding: 0.7rem;
+  border-radius: 10px;
+  border: none;
   font-size: 1rem;
 }
 
 .search-bar button {
-  padding: 12px 24px;
-  border-radius: 0 8px 8px 0;
+  background-color: #e3b5ff;
+  color: #000;
   border: none;
-  background: #6c63ff;
-  color: #fff;
+  padding: 0.7rem 1.2rem;
+  border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
-  font-size: 1rem;
 }
 
-.book-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2em;
-  justify-content: center;
-}
-
-.book-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  padding: 1.5em;
-  width: 220px;
-  text-align: center;
-}
-
-.book-card img {
-  max-width: 120px;
-  margin-bottom: 1em;
-}
-
-.book-card .book-description {
-  color: #444;
-  font-size: 0.95em;
-  margin-top: 0.5em;
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+  margin-top: 2rem;
 }

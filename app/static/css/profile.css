@@ -1,76 +1,71 @@
-.profile-section {
-  max-width: 700px;
-  margin: 40px auto;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  padding: 2.5em 2em;
-}
-
-.profile-header {
-  display: flex;
-  align-items: center;
-  gap: 1.5em;
-  margin-bottom: 2em;
-}
-
-.profile-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: #eee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5em;
-  color: #b39ddb;
-}
-
-.profile-info {
-  flex: 1;
-}
-
-.profile-info h2 {
-  margin: 0 0 0.3em 0;
-  font-size: 2em;
-  color: #6c63ff;
-}
-
-.profile-info p {
+body {
+  background-color: #0d0d0d;
+  color: white;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
-  color: #888;
+  padding: 2rem;
 }
 
-.profile-comments {
-  margin-top: 2.5em;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.profile-comments h3 {
-  font-size: 1.2em;
-  color: #6c63ff;
-  margin-bottom: 1em;
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
-.comment {
-  background: #f7f7fa;
-  border-radius: 8px;
-  padding: 1em 1.2em;
-  margin-bottom: 1em;
-  color: #333;
-  font-size: 1em;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+.logo img {
+  height: 40px;
+  margin-right: 10px;
 }
 
-@media (max-width: 600px) {
-  .profile-section {
-    padding: 1.2em 0.5em;
-  }
-  .profile-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.7em;
-  }
-  .profile-info h2 {
-    font-size: 1.3em;
-  }
+.back-button {
+  background-color: #d3afd3;
+  border: none;
+  border-radius: 15px;
+  padding: 0.5rem 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+h1 {
+  margin-top: 2rem;
+  font-size: 2rem;
+}
+
+a {
+  color: white;
+  text-decoration: underline;
+  font-size: 1.1rem;
+}
+
+.section {
+  margin-top: 2rem;
+}
+
+.logout-button {
+  margin-top: 3rem;
+  padding: 0.8rem 2rem;
+  background-color: #d3afd3;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul {
+  list-style: disc;
+  padding-left: 2rem;
+}
+
+strong {
+  color: #d3afd3;
 }
