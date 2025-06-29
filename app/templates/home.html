@@ -1,137 +1,126 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ReadList</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet">
+
 </head>
-<body>
-   <h1>ReadList 📚</h1>
-  <form action="{{ url_for('main.search') }}" method="POST">
-    <input type="text" name="query" placeholder="Rechercher un livre...">
-    <input type="submit" value="Rechercher">
+<body class="{{ 'light' if theme == 'light' else '' }}">
+
+  <header>
+  <div class="left-header">
+    <a class="navbar-brand" href="{{ url_for('main.home') }}">
+      <img src="{{ url_for('static', filename='image/Vector.png') }}" alt="Logo ReadList" style="width: 50px; height: auto;">
+    </a>
+    <div class="title">READLIST</div>
+  </div>
+
+  <form class="search-bar" action="{{ url_for('main.search') }}" method="POST">
+    <input type="text" name="query" placeholder="🔍 What do you want to read today ?" />
   </form>
 
-
-{% if random_quote %}
-  <blockquote style="font-style: italic; margin: 20px 0;">
-    “{{ random_quote }}”
-  </blockquote>
-{% endif %}
+  <a href="{{ url_for('main.profile') }}" class="profile-icon">
+    <img src="{{ url_for('static', filename='image/Group.png') }}" alt="Logo ReadList" style="width: 50px; height: auto;">
+  </a>
+</header>
 
 
-<h2>Let's discover new genres...</h2>
-<form action="{{ url_for('main.search_by_genre') }}" method="POST">
-  <select name="genre">
-    <option value="Science Fiction">Science Fiction</option>
-    <option value="Romance">Romance</option>
-    <option value="Mystery">Mystery</option>
-    <option value="Fantasy">Fantasy</option>
-    <option value="History">History</option>
-    <option value="Biography">Biography</option>
-    <option value="Self-Help">Self-Help</option>
-    <option value="Philosophy">Philosophy</option>
-    <!-- Tu peux ajouter plus de genres ici -->
-  </select>
-  <input type="submit" value="Chercher">
-</form>
-
-
-
-  <h2>RECOMMENDATION</h2>
-  {% if recommendations %}
-    <ul>
-      {% for book in recommendations %}
-        <li>
-          <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
-            {% if book.thumbnail %}
-              <img src="{{ book.thumbnail }}" alt="Couverture" style="height: 100px;">
-            {% endif %}
-            <p>{{ book.title }}</p>
-            <p>Auteurs : {{ book.authors | join(', ') }}</p>
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>Aucune recommandation pour le moment.</p>
+  {% if random_quote %}
+    <blockquote>“{{ random_quote }}”</blockquote>
   {% endif %}
+  
 
-
-
-  <h2>RECENT</h2>
-<div id="recent-books-container">
-    {% if recent_books %}
-  <ul>
-    {% for book in recent_books %}
-      <li>
-        <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
-          {% if book.thumbnail %}
-            <img src="{{ book.thumbnail }}" alt="Couverture" style="height: 100px;">
-          {% endif %}
-          <p>{{ book.title }}</p>
-          <p>Auteurs : {{ book.authors | join(', ') }}</p>
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Vous n'avez pas encore consulté de livres.</p>
-{% endif %}
+  <div class="genre-row">
+  <span class="genre-label">Let's discover new genres...</span>
+  <form class="genres-form" action="{{ url_for('main.search_by_genre') }}" method="POST">
+    <select name="genre">
+      <option value="Science Fiction">Science Fiction</option>
+      <option value="Romance">Romance</option>
+      <option value="Mystery">Mystery</option>
+      <option value="Fantasy">Fantasy</option>
+      <option value="History">History</option>
+      <option value="Biography">Biography</option>
+      <option value="Self-Help">Self-Help</option>
+      <option value="Philosophy">Philosophy</option>
+    </select>
+    <input type="submit" value="Search" />
+  </form>
 </div>
 
 
-
-
-
-
-  <a href="{{ url_for('main.profile') }}">Mon profil</a> <br>
-
-
-
-
-
-
-<script>
-  async function fetchRecentBooks() {
-    try {
-      const response = await fetch('/api/recent-books');
-      if (!response.ok) {
-        console.error('Erreur lors de la récupération des livres récents');
-        return;
-      }
-      const books = await response.json();
-
-      const container = document.getElementById('recent-books-container');
-      container.innerHTML = ''; // Vide le container
-
-      books.forEach(book => {
-        const bookDiv = document.createElement('div');
-        bookDiv.classList.add('recent-book');
-
-        bookDiv.innerHTML = `
-          <a href="/book/${book.id}">
-            <img src="${book.thumbnail || ''}" alt="Couverture" style="width: 80px; height: auto;">
-            <p>${book.title}</p>
-            <p><small>${book.authors.join(', ')}</small></p>
+  <div class="section-title"><span>RECENT</span></div>
+  <div class="book-section" id="recent-books-container">
+    {% if recent_books %}
+      {% for book in recent_books %}
+        <div class="book">
+          <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
+            {% if book.thumbnail %}
+              <img src="{{ book.thumbnail }}" alt="Cover">
+            {% endif %}
+            <p>{{ book.title }}</p>
+            <p><small>{{ book.authors | join(', ') }}</small></p>
           </a>
-        `;
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="width: 100%">You haven't consulted any books yet.</p>
+    {% endif %}
+  </div>
 
-        container.appendChild(bookDiv);
-      });
-    } catch (error) {
-      console.error('Erreur:', error);
+  <div class="section-title"><span>RECOMMENDATION</span></div>
+  <div class="book-section">
+    {% if recommendations %}
+      {% for book in recommendations %}
+        <div class="book">
+          <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
+            {% if book.thumbnail %}
+              <img src="{{ book.thumbnail }}" alt="Cover">
+            {% endif %}
+            <p>{{ book.title }}</p>
+            <p><small>{{ book.authors | join(', ') }}</small></p>
+          </a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="width: 100%">No recommendations available yet.</p>
+    {% endif %}
+
+  </div>
+
+
+  <script>
+    async function fetchRecentBooks() {
+      try {
+        const response = await fetch('/api/recent-books');
+        if (!response.ok) return;
+        const books = await response.json();
+        const container = document.getElementById('recent-books-container');
+        container.innerHTML = '';
+        books.forEach(book => {
+          const div = document.createElement('div');
+          div.className = 'book';
+          div.innerHTML = `
+            <a href="/book/${book.id}">
+              <img src="${book.thumbnail || ''}" alt="Cover" />
+              <p>${book.title}</p>
+              <p><small>${book.authors.join(', ')}</small></p>
+            </a>`;
+          container.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Error loading books:', err);
+      }
     }
-  }
-
-  window.addEventListener('load', fetchRecentBooks);
-
-  // Aussi gérer le cas du bouton "Précédent" du navigateur
-  window.addEventListener('pageshow', function(event) {
-    if (event.persisted) {
-      fetchRecentBooks();
-    }
-  });
-</script>
-
+    window.addEventListener('load', fetchRecentBooks);
+    window.addEventListener('pageshow', e => {
+      if (e.persisted) fetchRecentBooks();
+    });
+  </script>
 
 </body>
 </html>
+ 

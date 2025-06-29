@@ -8,6 +8,8 @@ from app import db
 auth = Blueprint('auth', __name__)
 
 
+from flask import flash
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -17,11 +19,18 @@ def login():
         password = form.password.data
         user = User.query.filter_by(email=email).first()
 
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('main.home'))
+        if not user:
+            flash("Aucun utilisateur trouvé avec cet email.", "error")
+        elif not check_password_hash(user.password, password):
+            flash("Mot de passe incorrect.", "error")
         else:
-            flash('Email ou mot de passe incorrect.')
+            login_user(user)
+            flash("Connexion réussie !", "success")
+            return redirect(url_for('main.home'))
+    elif form.errors:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"{field.capitalize()} : {error}", "error")
 
     return render_template('login.html', form=form)
 
@@ -35,20 +44,28 @@ def signup():
         password = form.password.data
 
         if User.query.filter_by(email=email).first():
-            flash('Email déjà utilisé.')
-            return redirect(url_for('auth.signup'))
+            flash('Email déjà utilisé.', 'error')
+            return redirect(url_for('auth.signup'))  # ✅ on reste sur signup
 
         new_user = User(
             email=email,
             name=name,
-            password=generate_password_hash(password,  method='pbkdf2:sha256')  # utilise la méthode par défaut (pbkdf2:sha256)
+            password=generate_password_hash(password, method='pbkdf2:sha256')
         )
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
         return redirect(url_for('main.home'))
 
+    # Cas où le formulaire n'est pas valide
+    elif form.errors:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"{field.capitalize()} : {error}", 'error')
+
     return render_template('signup.html', form=form)
+
+
 
 
 @auth.route('/logout')

@@ -1,0 +1,96 @@
+/* Reset basique */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #111; /* fond noir */
+  font-family: 'Arial', sans-serif;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  text-align: center;
+}
+
+/* Logo livre */
+.logo {
+  font-size: 3rem;
+  color: #d3afd3; /* violet clair */
+  margin-bottom: 0.3rem;
+}
+
+
+.subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* Form */
+form {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+
+
+button {
+  background-color: #d3afd3;
+  color: #111;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+button:hover {
+  background-color: #b07eb3;
+}
+
+/* Signup link */
+.signup {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: #eee;
+}
+
+.signup a {
+  color: #d3afd3;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Champ réutilisable */
+.input-field {
+  background: #ccc;
+  border: none;
+  border-radius: 12px;
+  padding: 0.8rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  outline: none;
+  transition: background-color 0.3s ease;
+  margin-bottom: 1.2rem;
+}
+
+.input-field::placeholder {
+  color: #999;
+}
+
+.input-field:focus {
+  background: #e6d6e6;
+}

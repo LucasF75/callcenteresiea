@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, session, Flask
 from flask_login import login_required, current_user
 from datetime import datetime
 from app.models import SavedBook, Comment, BookLike, RecentlyViewed
@@ -6,16 +6,22 @@ from app import db
 import requests
 import random
 
-
-
 main = Blueprint('main', __name__)
+    
+
+@main.route('/switch_theme')
+def switch_theme():
+    current_theme = session.get('theme', 'dark')
+    session['theme'] = 'light' if current_theme == 'dark' else 'dark'
+    return redirect(request.referrer or url_for('main.home'))
 
 @main.route('/')
 @login_required  # Pour que seul un utilisateur connecté y ait accès
 def home():
     # Recommandations générales (déjà faites, ici juste en rappel)
     recommended_books = []  
-    # ... ton code pour remplir recommended_books ...
+    # Par défaut thème sombre
+    theme = session.get('theme', 'dark')
 
     # --- Recommandations basées sur les likes ---
     liked_books = BookLike.query.filter_by(user_id=current_user.id, liked=True).all()
@@ -34,7 +40,7 @@ def home():
     recommendations = []
     if genres_count:
         top_genre = max(genres_count, key=genres_count.get)
-        url = f'https://www.googleapis.com/books/v1/volumes?q=subject:{top_genre}&maxResults=5'
+        url = f'https://www.googleapis.com/books/v1/volumes?q=subject:{top_genre}&maxResults=6'
         resp = requests.get(url)
         if resp.status_code == 200:
             data = resp.json()
@@ -49,7 +55,7 @@ def home():
 
     # Livres récemment consultés
     recent_books_raw = RecentlyViewed.query.filter_by(user_id=current_user.id)\
-                            .order_by(RecentlyViewed.timestamp.desc()).limit(5).all()
+                            .order_by(RecentlyViewed.timestamp.desc()).limit(6).all()
 
     recent_books = []
     for recent in recent_books_raw:
@@ -75,10 +81,11 @@ def home():
 
     random_quote = random.choice(quotes)
 
-    return render_template('home.html', user=current_user, recommended_books=recommended_books, recommendations=recommendations, random_quote=random_quote, recent_books=recent_books)
+    return render_template('home.html', theme=theme, user=current_user, recommended_books=recommended_books, recommendations=recommendations, random_quote=random_quote, recent_books=recent_books)
 
 @main.route('/search', methods=['GET', 'POST'])
 def search():
+    theme = session.get('theme', 'dark')
     books = []
     if request.method == 'POST':
         query = request.form.get('query')
@@ -95,7 +102,7 @@ def search():
                         'authors': volume_info.get('authors', []),
                         'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
                     })
-    return render_template('search.html', books=books)
+    return render_template('search.html', books=books, theme=theme)
 
 
 
@@ -127,8 +134,8 @@ def book_detail(book_id):
 
         is_saved = SavedBook.query.filter_by(user_id=current_user.id, book_id=book_id).first() is not None
         liked = BookLike.query.filter_by(user_id=current_user.id, book_id=book_id, liked=True).first() is not None
-
-        return render_template('details.html', book=book, is_saved=is_saved, comments=comments, liked=liked)
+        theme = session.get('theme', 'dark')
+        return render_template('details.html', book=book, is_saved=is_saved, comments=comments, liked=liked, theme=theme)
 
     flash("Livre introuvable.")
     return redirect(url_for('main.search'))
@@ -153,7 +160,8 @@ def save_book(book_id):
             db.session.commit()
             flash('Livre supprimé.')
 
-    return redirect(url_for('main.book_detail', book_id=book_id))
+    # Redirige vers la page d'où vient la requête (ex : liste enregistrés, détails, etc.)
+    return redirect(request.referrer or url_for('main.book_detail', book_id=book_id))
 
 
 @main.route('/saved')
@@ -161,6 +169,7 @@ def save_book(book_id):
 def saved_books():
     saved = SavedBook.query.filter_by(user_id=current_user.id).all()
     books = []
+    theme = session.get('theme', 'dark')
 
     for item in saved:
         response = requests.get(f"https://www.googleapis.com/books/v1/volumes/{item.book_id}")
@@ -174,7 +183,8 @@ def saved_books():
                 'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
             })
 
-    return render_template('saved.html', books=books)
+    return render_template('saved.html', books=books, theme=theme)
+
 
 
 @main.route('/like-book/<book_id>', methods=['POST'])
@@ -191,12 +201,16 @@ def like_book(book_id):
             like_entry.liked = True
         db.session.commit()
         flash("Livre aimé !")
+
     elif action == 'unlike':
         if like_entry:
             db.session.delete(like_entry)
             db.session.commit()
             flash("Like supprimé.")
-    return redirect(url_for('main.book_detail', book_id=book_id))
+
+    # Redirige toujours vers la page précédente (d'où vient le formulaire)
+    return redirect(request.referrer or url_for('main.liked_books'))
+
 
 
 @main.route('/liked')
@@ -207,6 +221,7 @@ def liked_books():
 
     for entry in liked:
         response = requests.get(f"https://www.googleapis.com/books/v1/volumes/{entry.book_id}")
+        theme = session.get('theme', 'dark')
         if response.status_code == 200:
             data = response.json()
             volume_info = data.get('volumeInfo', {})
@@ -217,7 +232,7 @@ def liked_books():
                 'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
             })
 
-    return render_template('liked.html', books=books)
+    return render_template('liked.html', books=books, theme=theme)
 
 
 
@@ -237,10 +252,11 @@ def comment_book(book_id):
 @main.route('/profile')
 @login_required
 def profile():
-
+    
+    theme = session.get('theme', 'dark')
     user_comments = Comment.query.filter_by(user_id=current_user.id).all()
 
-    return render_template('profile.html', user=current_user, comments=user_comments)
+    return render_template('profile.html', user=current_user, comments=user_comments, theme=theme)
 
 
 @main.route('/search-by-genre', methods=['POST'])
@@ -252,6 +268,7 @@ def search_by_genre():
     if genre:
         url = f'https://www.googleapis.com/books/v1/volumes?q=subject:{genre}&maxResults=10'
         response = requests.get(url)
+        theme = session.get('theme', 'dark')
         if response.status_code == 200:
             data = response.json()
             for item in data.get('items', []):
@@ -263,14 +280,14 @@ def search_by_genre():
                     'thumbnail': volume_info.get('imageLinks', {}).get('thumbnail')
                 })
 
-    return render_template('genre.html', books=books, genre=genre)
+    return render_template('genre.html', books=books, genre=genre, theme=theme)
 
 
 @main.route('/api/recent-books')
 @login_required
 def api_recent_books():
     recent_books_raw = RecentlyViewed.query.filter_by(user_id=current_user.id) \
-                        .order_by(RecentlyViewed.timestamp.desc()).limit(5).all()
+                        .order_by(RecentlyViewed.timestamp.desc()).limit(6).all()
 
     recent_books = []
     for recent in recent_books_raw:
@@ -286,3 +303,17 @@ def api_recent_books():
             })
 
     return jsonify(recent_books)
+
+
+@main.route('/delete_comment/<int:comment_id>/<string:book_id>', methods=['POST'])
+@login_required
+def delete_comment(comment_id, book_id):
+    if not current_user.is_admin:
+        flash("Action réservée à l'administrateur.")
+        return redirect(url_for('main.book_detail', book_id=book_id))
+
+    comment = Comment.query.get_or_404(comment_id)
+    db.session.delete(comment)
+    db.session.commit()
+    flash("Commentaire supprimé avec succès.")
+    return redirect(url_for('main.book_detail', book_id=book_id))

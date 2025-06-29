@@ -1,0 +1,33 @@
+/* liked.css */
+.book-form {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.delete-button {
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.details-link {
+  color: #b19cd9; /* violet */
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.back-link {
+  margin-top: 30px;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 80px;
+}
+
+
