@@ -9,6 +9,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
     name = db.Column(db.String(150), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+
 
 class SavedBook(db.Model):
     id = db.Column(db.Integer, primary_key=True)

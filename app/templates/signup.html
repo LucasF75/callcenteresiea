@@ -1,16 +1,45 @@
 <!doctype html>
-<html>
-  <head><title>ReadList</title></head>
-  <body>
-    <h2>Create account</h2>
-    <p>A good book  is always nice to share it...</p>
-    <form method="POST" action="{{ url_for('auth.signup') }}">
-      {{ form.hidden_tag() }}
-      {{ form.username.label }} {{ form.username() }}<br>
-      {{ form.email.label }} {{ form.email() }}<br>
-      {{ form.password.label }} {{ form.password() }}<br>
-      {{ form.submit() }}
-    </form>
-    <a href="{{ url_for('auth.login') }}">Already have an account?</a>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ReadList - Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+</head>
+<body class="{{ 'light' if theme == 'light' else '' }}">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class="flash-messages">
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
+  <h2>Create your account</h2>
+  <p>A good <span>book</span> is always nice to share it...</p>
+  <form method="POST" action="{{ url_for('auth.signup') }}">
+    {{ form.hidden_tag() }}
+
+    <label for="username">{{ form.username.label }}</label>
+    {{ form.username(size=32) }}
+
+    <label for="email">{{ form.email.label }}</label>
+    {{ form.email(size=32) }}
+
+    <label for="password">{{ form.password.label }}</label>
+    {{ form.password(size=32) }}
+
+    {{ form.submit(class="btn") }}
+  </form>
+
+  <div class="footer">
+    Have a account ? <a href="{{ url_for('auth.login') }}">LOGIN</a>
+  </div>
+</body>
 </html>
