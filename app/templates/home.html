@@ -1,131 +1,125 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ReadList</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet">
 
-{% block title %}Accueil - ReadList{% endblock %}
+</head>
+<body class="{{ 'light' if theme == 'light' else '' }}">
 
-{% block content %}
-  <div class="login-section">
-    <div class="login-box">
-      <div class="title">READLIST</div>
-      <div class="logo">
-        <svg width="60" height="60" fill="none" stroke="#d9b4f3" stroke-width="3" viewBox="0 0 24 24">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-          <path d="M20 19.5A2.5 2.5 0 0 0 17.5 17H4"></path>
-          <path d="M6 4v15"></path>
-          <path d="M18 4v15"></path>
-          <path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"></path>
-        </svg>
-      </div>
-      <div class="subtitle">Bienvenue sur ReadList !</div>
-
-      <form action="{{ url_for('main.search') }}" method="POST" class="auth-form" style="margin-bottom: 20px;">
-        <input class="input-field" type="text" name="query" placeholder="Rechercher un livre...">
-        <button type="submit">Rechercher</button>
-      </form>
-
-      {% if random_quote %}
-        <blockquote class="quote">
-          “{{ random_quote }}”
-        </blockquote>
-      {% endif %}
-
-      <h2>Découvre de nouveaux genres...</h2>
-      <form action="{{ url_for('main.search_by_genre') }}" method="POST" class="auth-form" style="margin-bottom: 20px;">
-        <select name="genre" class="input-field">
-          <option value="Science Fiction">Science Fiction</option>
-          <option value="Romance">Romance</option>
-          <option value="Mystery">Mystery</option>
-          <option value="Fantasy">Fantasy</option>
-          <option value="History">History</option>
-          <option value="Biography">Biography</option>
-          <option value="Self-Help">Self-Help</option>
-          <option value="Philosophy">Philosophy</option>
-        </select>
-        <button type="submit">Chercher</button>
-      </form>
-
-      <h2>RECOMMANDATION</h2>
-      {% if recommendations %}
-        <ul>
-          {% for book in recommendations %}
-            <li style="margin-bottom: 15px;">
-              <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
-                {% if book.thumbnail %}
-                  <img src="{{ book.thumbnail }}" alt="Couverture" style="height: 100px;">
-                {% endif %}
-                <p>{{ book.title }}</p>
-                <p>Auteurs : {{ book.authors | join(', ') }}</p>
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p>Aucune recommandation pour le moment.</p>
-      {% endif %}
-
-      <h2>RÉCENTS</h2>
-      <div id="recent-books-container">
-        {% if recent_books %}
-          <ul>
-            {% for book in recent_books %}
-              <li style="margin-bottom: 15px;">
-                <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
-                  {% if book.thumbnail %}
-                    <img src="{{ book.thumbnail }}" alt="Couverture" style="height: 100px;">
-                  {% endif %}
-                  <p>{{ book.title }}</p>
-                  <p>Auteurs : {{ book.authors | join(', ') }}</p>
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p>Vous n'avez pas encore consulté de livres.</p>
-        {% endif %}
-      </div>
-
-      <div style="margin-top: 20px;">
-        <a href="{{ url_for('main.profile') }}">Mon profil</a>
-      </div>
-    </div>
+  <header>
+  <div class="left-header">
+    <a class="navbar-brand" href="{{ url_for('main.home') }}">
+      <img src="{{ url_for('static', filename='image/Vector.png') }}" alt="Logo ReadList" style="width: 50px; height: auto;">
+    </a>
+    <div class="title">READLIST</div>
   </div>
+
+  <form class="search-bar" action="{{ url_for('main.search') }}" method="POST">
+    <input type="text" name="query" placeholder="🔍 What do you want to read today ?" />
+  </form>
+
+  <a href="{{ url_for('main.profile') }}" class="profile-icon">
+    <img src="{{ url_for('static', filename='image/Group.png') }}" alt="Logo ReadList" style="width: 50px; height: auto;">
+  </a>
+</header>
+
+
+  {% if random_quote %}
+    <blockquote>“{{ random_quote }}”</blockquote>
+  {% endif %}
+  
+
+  <div class="genre-row">
+  <span class="genre-label">Let's discover new genres...</span>
+  <form class="genres-form" action="{{ url_for('main.search_by_genre') }}" method="POST">
+    <select name="genre">
+      <option value="Science Fiction">Science Fiction</option>
+      <option value="Romance">Romance</option>
+      <option value="Mystery">Mystery</option>
+      <option value="Fantasy">Fantasy</option>
+      <option value="History">History</option>
+      <option value="Biography">Biography</option>
+      <option value="Self-Help">Self-Help</option>
+      <option value="Philosophy">Philosophy</option>
+    </select>
+    <input type="submit" value="Search" />
+  </form>
+</div>
+
+
+  <div class="section-title"><span>RECENT</span></div>
+  <div class="book-section" id="recent-books-container">
+    {% if recent_books %}
+      {% for book in recent_books %}
+        <div class="book">
+          <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
+            {% if book.thumbnail %}
+              <img src="{{ book.thumbnail }}" alt="Cover">
+            {% endif %}
+            <p>{{ book.title }}</p>
+            <p><small>{{ book.authors | join(', ') }}</small></p>
+          </a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="width: 100%">You haven't consulted any books yet.</p>
+    {% endif %}
+  </div>
+
+  <div class="section-title"><span>RECOMMENDATION</span></div>
+  <div class="book-section">
+    {% if recommendations %}
+      {% for book in recommendations %}
+        <div class="book">
+          <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
+            {% if book.thumbnail %}
+              <img src="{{ book.thumbnail }}" alt="Cover">
+            {% endif %}
+            <p>{{ book.title }}</p>
+            <p><small>{{ book.authors | join(', ') }}</small></p>
+          </a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="width: 100%">No recommendations available yet.</p>
+    {% endif %}
+
+  </div>
+
 
   <script>
     async function fetchRecentBooks() {
       try {
         const response = await fetch('/api/recent-books');
-        if (!response.ok) {
-          console.error('Erreur lors de la récupération des livres récents');
-          return;
-        }
+        if (!response.ok) return;
         const books = await response.json();
-
         const container = document.getElementById('recent-books-container');
         container.innerHTML = '';
-
         books.forEach(book => {
-          const bookDiv = document.createElement('div');
-          bookDiv.classList.add('recent-book');
-
-          bookDiv.innerHTML = `
+          const div = document.createElement('div');
+          div.className = 'book';
+          div.innerHTML = `
             <a href="/book/${book.id}">
-              <img src="${book.thumbnail || ''}" alt="Couverture" style="width: 80px; height: auto;">
+              <img src="${book.thumbnail || ''}" alt="Cover" />
               <p>${book.title}</p>
               <p><small>${book.authors.join(', ')}</small></p>
-            </a>
-          `;
-
-          container.appendChild(bookDiv);
+            </a>`;
+          container.appendChild(div);
         });
-      } catch (error) {
-        console.error('Erreur:', error);
+      } catch (err) {
+        console.error('Error loading books:', err);
       }
     }
-
     window.addEventListener('load', fetchRecentBooks);
-    window.addEventListener('pageshow', function(event) {
-      if (event.persisted) {
-        fetchRecentBooks();
-      }
+    window.addEventListener('pageshow', e => {
+      if (e.persisted) fetchRecentBooks();
     });
   </script>
-{% endblock %}
+
+</body>
+</html>

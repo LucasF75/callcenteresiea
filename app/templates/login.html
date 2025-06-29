@@ -1,35 +1,39 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ReadList - Login</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body class="{{ 'light' if theme == 'light' else '' }}">
 
-{% block title %}Login - ReadList{% endblock %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class="flash-messages">
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-{% endblock %}
+  <div class="title">READLIST</div>
+  <div class="logo">📖</div>
+  <div class="subtitle">Read it. Rate it. Share it.</div>
 
-{% block content %}
-  <div class="login-section">
-    <div class="login-box">
-      <div class="title">READLIST</div>
-      <div class="logo">
-        <!-- SVG icon here -->
-        <svg width="60" height="60" fill="none" stroke="#d9b4f3" stroke-width="3" viewBox="0 0 24 24">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-          <path d="M20 19.5A2.5 2.5 0 0 0 17.5 17H4"></path>
-          <path d="M6 4v15"></path>
-          <path d="M18 4v15"></path>
-          <path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"></path>
-        </svg>
-      </div>
-      <div class="subtitle">Read it. Rate it. Share it.</div>
-      <form method="POST" class="auth-form">
-        {{ form.hidden_tag() }}
-        {{ form.email(class="input-field", placeholder="EMAIL") }}
-        {{ form.password(class="input-field", placeholder="PASSWORD") }}
-        <button type="submit">LOG IN</button>
-      </form>
-      <div class="signup">
-        Don’t have a account ? <a href="{{ url_for('auth.signup') }}">SIGNUP</a>
-      </div>
-    </div>
+  <form method="POST" action="{{ url_for('auth.login') }}">
+    {{ form.hidden_tag() }}
+    {{ form.email(class_="input-field", placeholder="EMAIL", autocomplete="username") }}
+    {{ form.password(class_="input-field", placeholder="PASSWORD", autocomplete="current-password") }}
+    <button type="submit">LOG IN</button>
+  </form>
+  <div class="signup">
+    Don’t have a account ? <a href="{{ url_for('auth.signup') }}">SIGNUP</a>
   </div>
-{% endblock %}
+</body>
+
+</html>

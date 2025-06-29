@@ -1,5 +1,5 @@
-/* saved.css */
-.save-form {
+/* liked.css */
+.book-form {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -12,16 +12,20 @@
   padding: 8px 12px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
 }
 
 .details-link {
   color: #b19cd9; /* violet */
   text-decoration: none;
   margin-left: 10px;
-  font-size: 14px;
 }
 
 .back-link {
   margin-top: 30px;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 80px;
 }

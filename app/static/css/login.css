@@ -23,13 +23,6 @@ body {
   margin-bottom: 0.3rem;
 }
 
-.title {
-  font-family: 'Georgia', serif;
-  font-weight: bold;
-  font-size: 1.8rem;
-  letter-spacing: 2px;
-  margin-bottom: 0.3rem;
-}
 
 .subtitle {
   font-size: 1.1rem;
@@ -44,30 +37,7 @@ form {
   gap: 1.2rem;
 }
 
-input[type="text"],
-input[type="password"] {
-  background: #ccc;
-  border: none;
-  border-radius: 12px;
-  padding: 0.8rem 1.2rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #111;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  outline: none;
-  transition: background-color 0.3s ease;
-}
 
-input[type="text"]::placeholder,
-input[type="password"]::placeholder {
-  color: #999;
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus {
-  background: #e6d6e6;
-}
 
 button {
   background-color: #d3afd3;
