@@ -1,13 +1,8 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-<<<<<<< HEAD
 from flask_migrate import Migrate
-
-
-=======
 import os
->>>>>>> origin
 
 db = SQLAlchemy()
 migrate = Migrate()
