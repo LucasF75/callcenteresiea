@@ -81,7 +81,7 @@ def home():
 
     random_quote = random.choice(quotes)
 
-    return render_template('home.html', theme=theme, user=current_user, recommended_books=recommended_books, recommendations=recommendations, random_quote=random_quote, recent_books=recent_books)
+    return render_template('home.html', theme=theme, user=current_user, recommended_books=recommended_books, recommendations=recommendations, random_quote=random_quote, recent_books=recent_books, quotes=quotes)
 
 @main.route('/search', methods=['GET', 'POST'])
 def search():

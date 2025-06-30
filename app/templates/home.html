@@ -12,44 +12,47 @@
 <body class="{{ 'light' if theme == 'light' else '' }}">
 
   <header>
-  <div class="left-header">
-    <a class="navbar-brand" href="{{ url_for('main.home') }}">
-      <img src="{{ url_for('static', filename='image/Vector.png') }}" alt="Logo ReadList" style="width: 50px; height: auto;">
-    </a>
-    <div class="title">READLIST</div>
-  </div>
+    <div class="left-header">
+      <a class="navbar-brand" href="{{ url_for('main.home') }}">
+        <img src="{{ url_for('static', filename='image/Vector.png') }}" alt="Logo ReadList" style="width: 50px; height: auto;">
+      </a>
+      <div class="title">READLIST</div>
+    </div>
 
-  <form class="search-bar" action="{{ url_for('main.search') }}" method="POST">
-    <input type="text" name="query" placeholder="🔍 What do you want to read today ?" />
-  </form>
+    <form class="search-bar" action="{{ url_for('main.search') }}" method="POST">
+      <input type="text" name="query" placeholder="🔍 What do you want to read today ?" />
+    </form>
 
-  <a href="{{ url_for('main.profile') }}" class="profile-icon">
-    <img src="{{ url_for('static', filename='image/Group.png') }}" alt="Logo ReadList" style="width: 50px; height: auto;">
-  </a>
-</header>
+    <div class="right-header">
+       <a href="{{ url_for('main.profile') }}" class="profile-icon">
+        <img src="{{ url_for('static', filename='image/Group.png') }}" alt="Logo ReadList" style="width: 50px; height: auto;">
+      </a>
+    </div>
+  </header>
 
 
-  {% if random_quote %}
-    <blockquote>“{{ random_quote }}”</blockquote>
-  {% endif %}
+  
+  <blockquote id="quote-block">“{{ random_quote }}”</blockquote>
+
+
   
 
   <div class="genre-row">
-  <span class="genre-label">Let's discover new genres...</span>
-  <form class="genres-form" action="{{ url_for('main.search_by_genre') }}" method="POST">
-    <select name="genre">
-      <option value="Science Fiction">Science Fiction</option>
-      <option value="Romance">Romance</option>
-      <option value="Mystery">Mystery</option>
-      <option value="Fantasy">Fantasy</option>
-      <option value="History">History</option>
-      <option value="Biography">Biography</option>
-      <option value="Self-Help">Self-Help</option>
-      <option value="Philosophy">Philosophy</option>
-    </select>
-    <input type="submit" value="Search" />
-  </form>
-</div>
+    <span class="genre-label">Let's discover new genres...</span>
+    <form class="genres-form" action="{{ url_for('main.search_by_genre') }}" method="POST">
+      <select name="genre">
+        <option value="Science Fiction">Science Fiction</option>
+        <option value="Romance">Romance</option>
+        <option value="Mystery">Mystery</option>
+        <option value="Fantasy">Fantasy</option>
+        <option value="History">History</option>
+        <option value="Biography">Biography</option>
+        <option value="Self-Help">Self-Help</option>
+        <option value="Philosophy">Philosophy</option>
+      </select>
+      <input type="submit" value="Search" />
+    </form>
+  </div>
 
 
   <div class="section-title"><span>RECENT</span></div>
@@ -71,7 +74,7 @@
     {% endif %}
   </div>
 
-  <div class="section-title"><span>RECOMMENDATIONS</span></div>
+  <div class="section-title"><span>RECOMMENDATION</span></div>
   <div class="book-section">
     {% if recommendations %}
       {% for book in recommendations %}
@@ -121,6 +124,31 @@
     });
   </script>
 
+  <script>
+    const quotes = {{ quotes|tojson }};
+    let currentIndex = quotes.indexOf("{{ random_quote }}");
+    if (currentIndex === -1) currentIndex = 0;
+
+    const quoteBlock = document.getElementById('quote-block');
+
+    function changeQuote() {
+      // fadeout
+      quoteBlock.style.opacity = 0;
+
+      setTimeout(() => {
+        // change citation during fadeout
+        currentIndex = (currentIndex + 1) % quotes.length;
+        quoteBlock.textContent = `“${quotes[currentIndex]}”`;
+
+        // fade in
+        quoteBlock.style.opacity = 1;
+      }, 1000); // fadeout duration (1 seconde)
+    }
+
+    setInterval(changeQuote, 5000);
+  </script>
+
+
+
 </body>
 </html>
- 

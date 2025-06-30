@@ -1,10 +1,8 @@
 /* main.css */
 
-
 @import url('https://fonts.googleapis.com/css2?family=Krona+One&display=swap');
 
-
-/* Never show the menu horizontaly */
+/* Never align menu horizontaly */
 @media (min-width: 992px) {
   .navbar-collapse {
     display: none !important;
@@ -15,7 +13,7 @@
   }
 }
 
-/* Show the menu under the burger button, right-aligned */
+/* Menu shown under the burger button, right-aligned */
 .custom-collapse {
   position: absolute;
   top: 56px;
@@ -26,7 +24,7 @@
   z-index: 1050;
 }
 
-/* Vertical links-menu taking all the width */
+/* Vertical menu style for links with all the width */
 .custom-collapse .navbar-nav {
   flex-direction: column;
   gap: 10px;
@@ -37,7 +35,7 @@
   text-align: right;  
 }
 
-/* Menu not shown by default exept when collapsed */
+/* Menu not shown by default when collapse is activated */
 .custom-collapse.collapse:not(.show) {
   display: none;
 }
@@ -192,12 +190,33 @@ ul.book-list {
   
 }
 
-.left-header {
+.left-header, .right-header{
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 1.5rem;
 }
 
+
 .navbar-brand {
   margin-right: 0 !important;
+}
+
+
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.2rem;
+  }
+  h1 {
+    font-size: 1rem;
+  }
+
+  h2 {
+    font-size: 0.85rem;
+  }
+
+  h3 {
+    font-size: 0.75rem;
+  }
 }
