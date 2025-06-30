@@ -1,4 +1,4 @@
-/* liked.css */
+/* biblio.css */
 .book-form {
   display: flex;
   align-items: center;
@@ -15,7 +15,7 @@
 }
 
 .details-link {
-  color: #b19cd9; /* violet */
+  color: #b19cd9;
   text-decoration: none;
   margin-left: 10px;
 }
@@ -30,4 +30,8 @@ h1 {
   margin-bottom: 80px;
 }
 
-
+@media (max-width: 768px) {
+  .book-info h3 {
+    font-size: 1rem; /* reduce height in mobile version */
+  }
+}

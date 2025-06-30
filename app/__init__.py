@@ -1,13 +1,8 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-<<<<<<< HEAD
 from flask_migrate import Migrate
-
-
-=======
 import os
->>>>>>> origin
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -16,7 +11,7 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'une_clé_secrète'
 
-    # Connexion à ta base MySQL readlist
+    # Connection to MySQL database readlist
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -34,7 +29,7 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    # ⬇️ Import des blueprints
+    # ⬇️ Blueprints import
     from app.routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
 

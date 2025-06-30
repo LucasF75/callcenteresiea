@@ -1,14 +1,14 @@
 FROM python:3.11-slim
 
-# Installer les dépendances système nécessaires
+# Install required system dependencies
 RUN apt-get update && apt-get install -y gcc libpq-dev && rm -rf /var/lib/apt/lists/*
 
-# Copier le code de l'app
+# Copy /app code
 COPY .. /app
 WORKDIR /app
 
-# Installer les dépendances Python
+# Install Python dependencies
 RUN pip install --break-system-packages --no-cache-dir -r requirements.txt
 
-# Exposer le port Flask par défaut
+# Expose Flask port by default
 EXPOSE 5000
