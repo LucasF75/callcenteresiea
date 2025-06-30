@@ -19,7 +19,7 @@
     <button onclick="window.history.back()" class="back-button">Back</button>
   </div>
 
-  <h1>Profil of {{ user.name }}</h1>
+  <h1>Profile of {{ user.name }}</h1>
   <p>Email : {{ user.email }}</p>
 
   <div class="section">
@@ -32,11 +32,11 @@
     {% if comments %}
       <ul>
         {% for comment in comments %}
-          <li>Sur le livre <strong>{{ comment.book_id }}</strong> : {{ comment.content }}</li>
+          <li>About the book <strong>{{ comment.book_id }}</strong> : {{ comment.content }}</li>
         {% endfor %}
       </ul>
     {% else %}
-      <p>Aucun commentaire encore.</p>
+      <p>No comments yet.</p>
     {% endif %}
   </div>
 

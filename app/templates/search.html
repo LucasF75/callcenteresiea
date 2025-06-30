@@ -28,8 +28,8 @@
         <ul class="navbar-nav">
           <li class="nav-item"><a class="nav-link" href="{{ url_for('main.liked_books') }}">Liked</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('main.saved_books') }}">Saved</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.profile') }}">Profil</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout')}}">Déconnexion</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.profile') }}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout')}}">Logout</a></li>
         </ul>
       </div>
     </div>
@@ -45,7 +45,7 @@
     {% for book in books %}
       <li class="book-item">
         {% if book.thumbnail %}
-          <img src="{{ book.thumbnail }}" alt="Couverture">
+          <img src="{{ book.thumbnail }}" alt="Cover">
         {% endif %}
         <div class="book-info">
           <h3>{{ book.title }}</h3>
@@ -55,7 +55,7 @@
             <p>NA</p>
           {% endif %}
           <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="detail-link">
-            Voir les détails
+            See details
           </a>
         </div>
       </li>

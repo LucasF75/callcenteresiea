@@ -1,5 +1,4 @@
-/* Thème clair */
-
+/* Light theme*/
 
 body.light .search-bar input[type="text"] {
   background: #eee !important;
@@ -19,7 +18,7 @@ body.light .genre-label {
   color: black !important;
 }
 
-/* Thème sombre par défaut */
+/* Dark theme (by default) */
 body {
   margin: 0;
   background-color: #111;
@@ -47,7 +46,7 @@ header {
 }
 
 
-/* Barre de recherche */
+/* Search bar */
 .search-bar {
   display: flex;
   justify-content: flex-start;
@@ -94,7 +93,7 @@ blockquote {
   color: #eee;
 }
 
-/* Titre de section */
+/* Section title */
 .section-title {
   text-align: left;
   font-weight: bold;
@@ -104,7 +103,7 @@ blockquote {
   font-family: 'Krona One', sans-serif;
 }
 
-/* Sélecteurs et formulaire de genres */
+/* Genres selectors and forms */
 .genre-row {
   display: flex;
   justify-content: flex-start;
@@ -183,7 +182,7 @@ blockquote {
   margin: 0.3rem 0;
 }
 
-/* Liens */
+/* Links */
 a {
   color: #d3afd3;
   text-decoration: underline;
