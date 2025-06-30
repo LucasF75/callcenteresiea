@@ -121,16 +121,3 @@ The application integrates with the Google Books API to:
     Retrieve book details
 
     Get cover images
-
-Screenshots
-
-(You would typically include screenshots of the main interfaces here)
-Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
-License
-
-This project is licensed under the MIT License.
-Contact
-
-For questions or support, please contact [your email or contact information].
