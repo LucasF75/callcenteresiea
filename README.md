@@ -1,8 +1,9 @@
-Readlist - Book Tracking Application
-Overview
+# Readlist - Book Tracking Application
+## Overview
 
 Readlist is a web application designed to help book lovers track their reading, discover new books, and interact with a community of readers. The application provides personalized book recommendations based on your reading history and preferences.
-Features
+
+## Features
 
     User Authentication: Secure login and registration system
 
@@ -20,8 +21,8 @@ Features
 
     Responsive Design: Works on both desktop and mobile devices
 
-Technologies Used
-Backend
+## Technologies Used
+### Backend
 
     Python
 
@@ -35,7 +36,7 @@ Backend
 
     MySQL (database)
 
-Frontend
+### Frontend
 
     HTML5
 
@@ -43,76 +44,43 @@ Frontend
 
     JavaScript (for dynamic features)
 
-Infrastructure
+### Infrastructure
 
     Docker (containerization)
 
     Docker Compose (orchestration)
 
-Installation
-Prerequisites
+### Installation
+#### Prerequisites
 
-    Docker
+    docker
 
-    Docker Compose
+    docker-compose
 
-Setup Instructions
+#### Setup Instructions
 
     Clone the repository:
-    bash
+    git clone https://github.com/LucasF75/callcenteresiea.git
+    cd readlist
 
-git clone [repository-url]
-cd readlist
+#### Build and start the containers
 
-Build and start the containers:
-bash
+``docker-compose up --build (you can add -d for silent install)``
 
-docker-compose up --build
+The application will be available at: http://127.0.0.1:5000
 
-Initialize the database (in a new terminal):
-bash
-
-    docker-compose exec web python init_db.py
-
-    The application will be available at: http://localhost:5000
-
-Usage
-Default Admin Account
+## Usage
+### Default Admin Account
 
     Email: admin@readlist.com
 
     Password: admin123
 
-Regular User
+### Regular User
 
     Register a new account or use the admin credentials to log in
 
-Project Structure
-text
-
-readlist/
-├── app/                      # Application code
-│   ├── __init__.py           # Flask application factory
-│   ├── auth.py               # Authentication routes
-│   ├── forms.py              # WTForms definitions
-│   ├── models.py             # Database models
-│   ├── routes.py             # Main application routes
-│   └── templates/            # HTML templates
-├── static/                   # Static files
-│   └── css/                  # CSS stylesheets
-│       ├── bliblio.css
-│       ├── details.css
-│       ├── home.css
-│       ├── login.css
-│       ├── main.css
-│       ├── profile.css
-│       └── signup.css
-├── docker-compose.yml        # Docker configuration
-├── init_db.py                # Database initialization script
-├── requirements.txt          # Python dependencies
-└── run.py                    # Application entry point
-
-API Integration
+## API Integration
 
 The application integrates with the Google Books API to:
 
