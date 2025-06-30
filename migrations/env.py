@@ -21,7 +21,7 @@ def get_engine():
         return current_app.extensions['migrate'].db.get_engine()
     except (TypeError, AttributeError):
         # this works with Flask-SQLAlchemy>=3
-        return current_app.extensions['migrate'].db.engine
+        return current_app.extensions['migrate'].db.eng<summary><b>📁 Detailed Project Structure</b></summary>ine
 
 
 def get_engine_url():

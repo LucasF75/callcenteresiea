@@ -16,14 +16,14 @@ def switch_theme():
     return redirect(request.referrer or url_for('main.home'))
 
 @main.route('/')
-@login_required  # Pour que seul un utilisateur connecté y ait accès
+@login_required  # Access only by a logged user
 def home():
-    # Recommandations générales (déjà faites, ici juste en rappel)
+    # General recommendations
     recommended_books = []  
-    # Par défaut thème sombre
+    # Dark them by default
     theme = session.get('theme', 'dark')
 
-    # --- Recommandations basées sur les likes ---
+    # --- Like-bases recommendations ---
     liked_books = BookLike.query.filter_by(user_id=current_user.id, liked=True).all()
 
     genres_count = {}
@@ -53,7 +53,7 @@ def home():
                     'thumbnail': vi.get('imageLinks', {}).get('thumbnail')
                 })
 
-    # Livres récemment consultés
+    # Recently viewed books
     recent_books_raw = RecentlyViewed.query.filter_by(user_id=current_user.id)\
                             .order_by(RecentlyViewed.timestamp.desc()).limit(6).all()
 
@@ -115,10 +115,10 @@ def book_detail(book_id):
         volume_info = data.get('volumeInfo', {})
         comments = Comment.query.filter_by(book_id=book_id).order_by(Comment.timestamp.desc()).all()
 
-        # Enregistrement dans l'historique
+        # Historic saving
         viewed = RecentlyViewed.query.filter_by(user_id=current_user.id, book_id=book_id).first()
         if viewed:
-            viewed.timestamp = datetime.utcnow()  # mise à jour si déjà vu
+            viewed.timestamp = datetime.utcnow()  # update if already seen
         else:
             new_view = RecentlyViewed(user_id=current_user.id, book_id=book_id)
             db.session.add(new_view)
@@ -160,7 +160,7 @@ def save_book(book_id):
             db.session.commit()
             flash('Livre supprimé.')
 
-    # Redirige vers la page d'où vient la requête (ex : liste enregistrés, détails, etc.)
+    # Redirect to previous page (ex : saved, details, etc.)
     return redirect(request.referrer or url_for('main.book_detail', book_id=book_id))
 
 
@@ -208,7 +208,7 @@ def like_book(book_id):
             db.session.commit()
             flash("Like supprimé.")
 
-    # Redirige toujours vers la page précédente (d'où vient le formulaire)
+    # Redirect to previous page
     return redirect(request.referrer or url_for('main.liked_books'))
 
 

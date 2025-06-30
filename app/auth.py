@@ -45,7 +45,7 @@ def signup():
 
         if User.query.filter_by(email=email).first():
             flash('Email déjà utilisé.', 'error')
-            return redirect(url_for('auth.signup'))  # ✅ on reste sur signup
+            return redirect(url_for('auth.signup'))  # ✅ we stay on signup
 
         new_user = User(
             email=email,
@@ -57,7 +57,7 @@ def signup():
         login_user(new_user)
         return redirect(url_for('main.home'))
 
-    # Cas où le formulaire n'est pas valide
+    # Case where form is not valid
     elif form.errors:
         for field, errors in form.errors.items():
             for error in errors:
