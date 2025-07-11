@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate   # <-- Add this line
+from flask_migrate import Migrate
 import os
 
 db = SQLAlchemy()
@@ -29,7 +29,7 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    # ⬇️ Import des blueprints
+    # ⬇️ Blueprints import
     from app.routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
 

@@ -23,14 +23,13 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
     user = db.relationship('User', backref='comments')
 
 class BookLike(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    book_id = db.Column(db.String(255), nullable=False)  # même format que ton book_id Google
-    liked = db.Column(db.Boolean, default=True)  # True = like, False = dislike (optionnel)
+    book_id = db.Column(db.String(255), nullable=False)
+    liked = db.Column(db.Boolean, default=True)  # True = like, False = dislike (not implemented)
 
 class RecentlyViewed(db.Model):
     id = db.Column(db.Integer, primary_key=True)

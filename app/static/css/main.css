@@ -1,10 +1,8 @@
 /* main.css */
 
-
 @import url('https://fonts.googleapis.com/css2?family=Krona+One&display=swap');
 
-
-/* Forcer à ne jamais afficher le menu horizontalement */
+/* Never align menu horizontaly */
 @media (min-width: 992px) {
   .navbar-collapse {
     display: none !important;
@@ -15,18 +13,18 @@
   }
 }
 
-/* Pour que le menu s'affiche sous le bouton burger, aligné à droite */
+/* Menu shown under the burger button, right-aligned */
 .custom-collapse {
   position: absolute;
-  top: 56px; /* hauteur de la navbar, adapte si besoin */
-  right: 10px; /* espace à droite */
+  top: 56px;
+  right: 10px;
   border-radius: 5px;
   padding: 10px;
-  width: 200px; /* largeur du menu */
-  z-index: 1050; /* au-dessus du reste */
+  width: 200px;
+  z-index: 1050;
 }
 
-/* Pour que les liens prennent toute la largeur et aient un style de menu vertical */
+/* Vertical menu style for links with all the width */
 .custom-collapse .navbar-nav {
   flex-direction: column;
   gap: 10px;
@@ -37,7 +35,7 @@
   text-align: right;  
 }
 
-/* Pour que le menu ne soit pas visible par défaut sauf quand collapse est actif */
+/* Menu not shown by default when collapse is activated */
 .custom-collapse.collapse:not(.show) {
   display: none;
 }
@@ -58,7 +56,7 @@ body.light h1, body.light h2, body.light h3, body.light p {
 }
 
 body.light a {
-  color: #6a4c93 !important; /* violet plus foncé pour thème clair */
+  color: #6a4c93 !important;
 }
 
 
@@ -99,7 +97,7 @@ h3 {
 
 
 a {
-  color: #b19cd9; /* violet unifié */
+  color: #b19cd9;
   text-decoration: none;
 }
 
@@ -192,12 +190,33 @@ ul.book-list {
   
 }
 
-.left-header {
+.left-header, .right-header{
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 1.5rem;
 }
 
+
 .navbar-brand {
   margin-right: 0 !important;
+}
+
+
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.2rem;
+  }
+  h1 {
+    font-size: 1rem;
+  }
+
+  h2 {
+    font-size: 0.85rem;
+  }
+
+  h3 {
+    font-size: 0.75rem;
+  }
 }
